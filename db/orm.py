@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 from typing import Optional
 
-from sqlalchemy import select
+from sqlalchemy import select, delete
 
 from db.database import sync_engine, session_factory
 from db.models import Base, CarsOrm
@@ -108,27 +108,32 @@ class SyncOrm(object):
         :param offset:
         :return:
         """
-        with session_factory() as session:
-            if limit is not None:
-                query = query.limit(limit=limit)
+        try:
+            with session_factory() as session:
+                if limit is not None:
+                    query = query.limit(limit=limit)
 
-            if offset is not None:
-                query = query.offset(offset=offset)
+                if offset is not None:
+                    query = query.offset(offset=offset)
 
-            result = session.execute(query).all()
-            result_dict = dict()
+                result = session.execute(query).all()
+                result_dict = dict()
 
-            for element in result:
-                result_dict[element.car_id] = {
-                    "car_brand": element.car_brand,
-                    "car_model": element.car_model,
-                    "rent_deposit": element.rent_deposit,
-                    "drive_unit": element.drive_unit,
-                    "car_year": element.car_year,
-                    "engine_power": element.engine_power,
-                    "car_photo": element.car_photo
-                }
-            return result_dict
+                for element in result:
+                    result_dict[element.car_id] = {
+                        "car_brand": element.car_brand,
+                        "car_model": element.car_model,
+                        "rent_deposit": element.rent_deposit,
+                        "drive_unit": element.drive_unit,
+                        "car_year": element.car_year,
+                        "engine_power": element.engine_power,
+                        "car_photo": element.car_photo
+                    }
+                return result_dict
+        except Exception as e:
+            print(f"Error {e}")
+            session.rollback()
+            raise
 
     @staticmethod
     def get_cars_by_class(car_class: str, limit: Optional[int] = None, offset: Optional[int] = None) -> dict:
@@ -146,14 +151,155 @@ class SyncOrm(object):
         return SyncOrm.execute_query_for_car(query, limit, offset)
 
     @staticmethod
-    def get_car_by_id_in_admin(car_id: int):
-        with session_factory() as session:
-            query = select(CarsOrm).where(CarsOrm.car_id == car_id)
-            result = session.execute(query).first()
+    def get_car_by_id_for_admin(car_id: int):
+        """
+        Метод для получения данных автомобиля (для администратора)
+        :param car_id:
+        :return:
+        """
+        try:
+            with session_factory() as session:
+                query = select(CarsOrm).where(CarsOrm.car_id == car_id)
+                result = session.execute(query).first()
 
-            if result is not None:
-                car_data = dict(result)
-                return car_data
-            else:
-                return None
+                if result is not None:
+                    car_data = dict(result)
+                    return car_data
+                else:
+                    return None
+        except Exception as e:
+            print(f"Error {e}")
+            session.rollback()
+            raise
 
+    @staticmethod
+    def get_car_by_id_for_user(car_id: int):
+        """
+        Метод для получения данных автомобиля (для пользователя)
+        :param car_id:
+        :return:
+        """
+        try:
+            with session_factory() as session:
+                query = select(
+                    CarsOrm.car_id,
+                    CarsOrm.car_brand,
+                    CarsOrm.car_model,
+                    CarsOrm.rent_deposit,
+                    CarsOrm.car_class,
+                    CarsOrm.drive_unit,
+                    CarsOrm.car_fuel,
+                    CarsOrm.car_year,
+                    CarsOrm.engine_power,
+                    CarsOrm.transmission,
+                    CarsOrm.description,
+                    CarsOrm.car_photo
+                ).where(CarsOrm.car_id == car_id)
+
+                result = session.execute(query).first()
+
+                if result is not None:
+                    car_data = {
+                        "car_id": result.car_id,
+                        "car_brand": result.car_brand,
+                        "car_model": result.car_model,
+                        "rent_deposit": result.rent_deposit,
+                        "car_class": result.car_class,
+                        "drive_unit": result.drive_unit,
+                        "car_fuel": result.car_fuel,
+                        "car_year": result.car_year,
+                        "engine_power": result.engine_power,
+                        "transmission": result.transmission,
+                        "description": result.description,
+                        "car_photo": result.car_photo
+                    }
+                    return car_data
+                else:
+                    return None
+        except Exception as e:
+            print(f"Error {e}")
+            session.rollback()
+            raise
+
+    @staticmethod
+    def delete_car_by_id(car_id: int) -> None:
+        """
+        Метод для удаления автомобиля по его id
+        :param car_id:
+        :return:
+        """
+        try:
+            with session_factory() as session:
+                query = delete(CarsOrm).where(CarsOrm.car_id == car_id)
+                result = session.execute(query)
+                session.commit()
+        except Exception as e:
+            print(f"Error {e}")
+            session.rollback()
+            raise
+
+    @staticmethod
+    def update_car_by_id(car_id: int, car_brand: Optional[str] = None, car_model: Optional[str] = None,
+                         rent_deposit: Optional[int] = None, car_class: Optional[str] = None,
+                         drive_unit: Optional[str] = None, car_fuel: Optional[str] = None,
+                         car_year: Optional[int] = None, engine_power: Optional[int] = None,
+                         transmission: Optional[str] = None, description: Optional[str] = None,
+                         car_number: Optional[str] = None, car_photo: Optional[str] = None,
+                         car_status: Optional[str] = None) -> None:
+        """
+        Метод для редактирования данных автомобиля
+        :param car_id:
+        :param car_brand:
+        :param car_model:
+        :param rent_deposit:
+        :param car_class:
+        :param drive_unit:
+        :param car_fuel:
+        :param car_year:
+        :param engine_power:
+        :param transmission:
+        :param description:
+        :param car_number:
+        :param car_photo:
+        :param car_status:
+        :return:
+        """
+        try:
+            with session_factory() as session:
+                car = session.query(CarsOrm).where(CarsOrm.car_id == car_id).one_or_none()
+
+                if car is not None:
+                    if car_brand is not None:
+                        car.car_brand = car_brand
+                    if car_model is not None:
+                        car.car_model = car_model
+                    if rent_deposit is not None:
+                        car.rent_deposit = rent_deposit
+                    if car_class is not None:
+                        car.car_class = car_class
+                    if drive_unit is not None:
+                        car.drive_unit = drive_unit
+                    if car_fuel is not None:
+                        car.car_fuel = car_fuel
+                    if car_year is not None:
+                        car.car_year = car_year
+                    if engine_power is not None:
+                        car.engine_power = engine_power
+                    if transmission is not None:
+                        car.transmission = transmission
+                    if description is not None:
+                        car.description = description
+                    if car_number is not None:
+                        car.car_number = car_number
+                    if car_photo is not None:
+                        car.car_photo = car_photo
+                    if car_status is not None:
+                        car.car_status = car_status
+
+                    session.commit()
+                else:
+                    print(f"Car with id {car_id} not found.")
+        except Exception as e:
+            print(f"Error {e}")
+            session.rollback()
+            raise
