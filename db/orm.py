@@ -61,32 +61,99 @@ class SyncOrm(object):
             car_status=car_status
         )
 
-        with session_factory() as session:
-            session.add_all([car])
-            session.commit()
+        try:
+            with session_factory() as session:
+                session.add_all([car])
+                session.commit()
+        except Exception as e:
+            print(f"Error {e}")
+            session.rollback()
+            raise
 
     @staticmethod
-    def get_car_by_brand(car_brand: str, limit: Optional[int] = None, offset: Optional[int] = None) -> dict:
+    def get_cars_by_brand(car_brand: str, limit: Optional[int] = None, offset: Optional[int] = None) -> dict:
+        """
+        Метод для вывода автомобилей по бренду
+        :param car_brand:
+        :param limit:
+        :param offset:
+        :return:
+        """
+        query = select(CarsOrm.car_id, CarsOrm.car_brand, CarsOrm.car_model, CarsOrm.rent_deposit,
+                       CarsOrm.drive_unit, CarsOrm.car_year,
+                       CarsOrm.engine_power, CarsOrm.car_photo).where(CarsOrm.car_brand == car_brand)
+
+        return SyncOrm.execute_query_for_car(query, limit, offset)
+
+    @staticmethod
+    def get_all_car(limit: Optional[int] = None, offset: Optional[int] = None):
+        """
+        Метод для вывода всех автомобилей
+        :param limit:
+        :param offset:
+        :return:
+        """
+        query = select(CarsOrm.car_id, CarsOrm.car_brand, CarsOrm.car_model, CarsOrm.rent_deposit,
+                       CarsOrm.drive_unit, CarsOrm.car_year,
+                       CarsOrm.engine_power, CarsOrm.car_photo)
+
+        return SyncOrm.execute_query_for_car(query, limit, offset)
+
+    @staticmethod
+    def execute_query_for_car(query, limit: Optional[int] = None, offset: Optional[int] = None) -> dict:
+        """
+        Метод для выполнения запросов для CarsORM
+        :param query:
+        :param limit:
+        :param offset:
+        :return:
+        """
         with session_factory() as session:
-            query = select(CarsOrm.car_brand, CarsOrm.car_model, CarsOrm.rent_deposit,
-                           CarsOrm.drive_unit, CarsOrm.car_year,
-                           CarsOrm.engine_power).where(CarsOrm.car_brand == car_brand)
             if limit is not None:
                 query = query.limit(limit=limit)
 
             if offset is not None:
                 query = query.offset(offset=offset)
 
-            result = session.execute(query).scalars().all()
+            result = session.execute(query).all()
             result_dict = dict()
 
-            for index, element in enumerate(result):
-                result_dict[index] = {
+            for element in result:
+                result_dict[element.car_id] = {
                     "car_brand": element.car_brand,
                     "car_model": element.car_model,
                     "rent_deposit": element.rent_deposit,
                     "drive_unit": element.drive_unit,
                     "car_year": element.car_year,
-                    "engine_power": element.engine_power
+                    "engine_power": element.engine_power,
+                    "car_photo": element.car_photo
                 }
             return result_dict
+
+    @staticmethod
+    def get_cars_by_class(car_class: str, limit: Optional[int] = None, offset: Optional[int] = None) -> dict:
+        """
+        Вывод автомобилей по их классам
+        :param car_class:
+        :param limit:
+        :param offset:
+        :return:
+        """
+        query = select(CarsOrm.car_id, CarsOrm.car_brand, CarsOrm.car_model, CarsOrm.rent_deposit,
+                       CarsOrm.drive_unit, CarsOrm.car_year,
+                       CarsOrm.engine_power).where(CarsOrm.car_class == car_class)
+
+        return SyncOrm.execute_query_for_car(query, limit, offset)
+
+    @staticmethod
+    def get_car_by_id_in_admin(car_id: int):
+        with session_factory() as session:
+            query = select(CarsOrm).where(CarsOrm.car_id == car_id)
+            result = session.execute(query).first()
+
+            if result is not None:
+                car_data = dict(result)
+                return car_data
+            else:
+                return None
+

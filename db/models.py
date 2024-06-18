@@ -30,14 +30,14 @@ class CarsOrm(Base):
     __tablename__ = "cars"
     __table_args__ = (
         CheckConstraint('car_price > 0'),
-        CheckConstraint("car_class in ('A', 'B', 'C', 'D', 'E', 'F', 'M', 'S', 'J')"),
+        CheckConstraint("car_class in ('A', 'B', 'C', 'D', 'E', 'F', 'M', 'S', 'J', 'truck', 'van')"),
         CheckConstraint("car_fuel in ('дизель', 'бензин', 'гибрид', 'электро', 'водород')"),
         CheckConstraint("transmission in ('АКПП', 'МКПП', 'Вариатор', 'Робот')"),
         CheckConstraint("rent_deposit > 0"),
         CheckConstraint("car_status in ('0', '1')"),
         CheckConstraint("car_year > 1970")
     )
-    id = Mapped[id]
+    car_id = Mapped[id]
     car_brand = Mapped[car_brand]
     car_model = Mapped[car_status]
     rent_deposit = Mapped[rent_deposit]
