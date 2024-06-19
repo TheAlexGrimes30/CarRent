@@ -30,15 +30,23 @@ class SyncOrm(object):
         Метод удаляет все таблицы в базе данных
         :return:
         """
-        Base.metadata.drop_all(sync_engine)
+        try:
+            Base.metadata.drop_all(sync_engine)
+            print("Tables deleted successfully.")
+        except Exception as e:
+            print(f"An error occurred: {e}")
 
     @staticmethod
-    def crate_tables() -> None:
+    def create_tables() -> None:
         """
         Метод создаёт таблицы в базе данных
         :return:
         """
-        Base.metadata.create_all(sync_engine)
+        try:
+            Base.metadata.create_all(sync_engine)
+            print("Tables created successfully.")
+        except Exception as e:
+            print(f"An error occurred: {e}")
 
     @staticmethod
     def add_car(car_brand: str, car_model: str, rent_deposit: int, car_class: str,
@@ -86,7 +94,7 @@ class SyncOrm(object):
         return SyncOrm.execute_query_for_car(query, limit, offset)
 
     @staticmethod
-    def get_all_car(limit: Optional[int] = None, offset: Optional[int] = None):
+    def get_all_cars(limit: Optional[int] = None, offset: Optional[int] = None):
         """
         Метод для вывода всех автомобилей
         :param limit:
@@ -163,7 +171,9 @@ class SyncOrm(object):
                 result = session.execute(query).first()
 
                 if result is not None:
-                    car_data = dict(result)
+                    car_instance = result[0]
+                    car_data = {column.key: getattr(car_instance, column.key) for column in
+                                car_instance.__table__.columns}
                     return car_data
                 else:
                     return None

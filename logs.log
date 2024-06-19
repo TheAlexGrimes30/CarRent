@@ -1,0 +1,160 @@
+2024-06-19 20:47:54 - INFO - API started
+2024-06-19 20:49:59 - INFO - API started
+2024-06-19 20:55:11 - INFO - API started
+2024-06-19 20:56:26 - INFO - API started
+2024-06-19 20:57:34 - INFO - API started
+2024-06-19 20:58:35 - INFO - API started
+2024-06-19 20:59:28 - INFO - API started
+2024-06-19 20:59:28 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-3' coro=<initialize_database() done, defined at C:\Python SFU\FastAPI\CarRent\app\main.py:20> exception=MissingGreenlet("greenlet_spawn has not been called and asyncio event loop is already running; can't call await_fallback() here. Was IO attempted in an unexpected place?")>
+Traceback (most recent call last):
+  File "C:\Python SFU\FastAPI\CarRent\app\main.py", line 23, in initialize_database
+    sync_orm.drop_tables()
+  File "C:\Python SFU\FastAPI\CarRent\db\orm.py", line 33, in drop_tables
+    Base.metadata.drop_all(sync_engine)
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\sql\schema.py", line 5860, in drop_all
+    bind._run_ddl_visitor(
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\engine\base.py", line 3243, in _run_ddl_visitor
+    with self.begin() as conn:
+  File "C:\Users\sagop\AppData\Local\Programs\Python\Python39\lib\contextlib.py", line 119, in __enter__
+    return next(self.gen)
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\engine\base.py", line 3233, in begin
+    with self.connect() as conn:
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\engine\base.py", line 3269, in connect
+    return self._connection_cls(self)
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\engine\base.py", line 145, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\engine\base.py", line 3293, in raw_connection
+    return self.pool.connect()
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\pool\base.py", line 452, in connect
+    return _ConnectionFairy._checkout(self)
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\pool\base.py", line 1269, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\pool\base.py", line 716, in checkout
+    rec = pool._do_get()
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\pool\impl.py", line 170, in _do_get
+    self._dec_overflow()
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\pool\impl.py", line 167, in _do_get
+    return self._create_connection()
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\pool\base.py", line 393, in _create_connection
+    return _ConnectionRecord(self)
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\pool\base.py", line 678, in __init__
+    self.__connect()
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\pool\base.py", line 903, in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\pool\base.py", line 898, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\engine\create.py", line 645, in connect
+    return dialect.connect(*cargs, **cparams)
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\engine\default.py", line 616, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 934, in connect
+    await_fallback(creator_fn(*arg, **kw)),
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 155, in await_fallback
+    raise exc.MissingGreenlet(
+sqlalchemy.exc.MissingGreenlet: greenlet_spawn has not been called and asyncio event loop is already running; can't call await_fallback() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2024-06-19 20:59:28 - INFO - API stopped
+2024-06-19 21:00:12 - INFO - API started
+2024-06-19 21:00:12 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-3' coro=<initialize_database() done, defined at C:\Python SFU\FastAPI\CarRent\app\main.py:20> exception=MissingGreenlet("greenlet_spawn has not been called and asyncio event loop is already running; can't call await_fallback() here. Was IO attempted in an unexpected place?")>
+Traceback (most recent call last):
+  File "C:\Python SFU\FastAPI\CarRent\app\main.py", line 23, in initialize_database
+    sync_orm.drop_tables()
+  File "C:\Python SFU\FastAPI\CarRent\db\orm.py", line 33, in drop_tables
+    Base.metadata.drop_all(sync_engine)
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\sql\schema.py", line 5860, in drop_all
+    bind._run_ddl_visitor(
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\engine\base.py", line 3243, in _run_ddl_visitor
+    with self.begin() as conn:
+  File "C:\Users\sagop\AppData\Local\Programs\Python\Python39\lib\contextlib.py", line 119, in __enter__
+    return next(self.gen)
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\engine\base.py", line 3233, in begin
+    with self.connect() as conn:
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\engine\base.py", line 3269, in connect
+    return self._connection_cls(self)
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\engine\base.py", line 145, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\engine\base.py", line 3293, in raw_connection
+    return self.pool.connect()
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\pool\base.py", line 452, in connect
+    return _ConnectionFairy._checkout(self)
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\pool\base.py", line 1269, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\pool\base.py", line 716, in checkout
+    rec = pool._do_get()
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\pool\impl.py", line 170, in _do_get
+    self._dec_overflow()
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\pool\impl.py", line 167, in _do_get
+    return self._create_connection()
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\pool\base.py", line 393, in _create_connection
+    return _ConnectionRecord(self)
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\pool\base.py", line 678, in __init__
+    self.__connect()
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\pool\base.py", line 903, in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\pool\base.py", line 898, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\engine\create.py", line 645, in connect
+    return dialect.connect(*cargs, **cparams)
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\engine\default.py", line 616, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 934, in connect
+    await_fallback(creator_fn(*arg, **kw)),
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 155, in await_fallback
+    raise exc.MissingGreenlet(
+sqlalchemy.exc.MissingGreenlet: greenlet_spawn has not been called and asyncio event loop is already running; can't call await_fallback() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2024-06-19 21:09:06 - INFO - API stopped
+2024-06-19 21:09:11 - INFO - API started
+2024-06-19 21:09:11 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-3' coro=<initialize_database() done, defined at C:\Python SFU\FastAPI\CarRent\app\main.py:20> exception=AttributeError("'SyncOrm' object has no attribute 'create_tables'")>
+Traceback (most recent call last):
+  File "C:\Python SFU\FastAPI\CarRent\app\main.py", line 24, in initialize_database
+    sync_orm.create_tables()
+AttributeError: 'SyncOrm' object has no attribute 'create_tables'
+2024-06-19 21:52:37 - INFO - API stopped
+2024-06-19 21:52:41 - INFO - API started
+2024-06-19 21:52:41 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-3' coro=<initialize_database() done, defined at C:\Python SFU\FastAPI\CarRent\app\main.py:20> exception=AttributeError("'SyncOrm' object has no attribute 'create_tables'")>
+Traceback (most recent call last):
+  File "C:\Python SFU\FastAPI\CarRent\app\main.py", line 24, in initialize_database
+    sync_orm.create_tables()
+AttributeError: 'SyncOrm' object has no attribute 'create_tables'
+2024-06-19 22:03:37 - INFO - API stopped
+2024-06-19 22:03:42 - INFO - API started
+2024-06-19 22:04:57 - INFO - API started
+2024-06-19 22:04:57 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-3' coro=<initialize_database() done, defined at C:\Python SFU\FastAPI\CarRent\app\main.py:21> exception=AttributeError("'SyncOrm' object has no attribute 'create_tables'")>
+Traceback (most recent call last):
+  File "C:\Python SFU\FastAPI\CarRent\app\main.py", line 25, in initialize_database
+    sync_orm.create_tables()
+AttributeError: 'SyncOrm' object has no attribute 'create_tables'
+2024-06-19 22:06:11 - INFO - API stopped
+2024-06-19 22:06:14 - INFO - API started
+2024-06-19 22:06:14 - INFO - Database initialization complete
+2024-06-19 22:06:46 - INFO - New car was added
+2024-06-19 22:07:57 - INFO - All cars with limit=None and offset=None
+2024-06-19 22:09:50 - INFO - New car was added
+2024-06-19 22:10:23 - INFO - New car was added
+2024-06-19 22:11:40 - INFO - API stopped
+2024-06-19 22:11:44 - INFO - API started
+2024-06-19 22:11:44 - INFO - Database initialization complete
+2024-06-19 22:12:06 - INFO - All cars with limit=None and offset=None
+2024-06-19 22:13:28 - INFO - New car was added
+2024-06-19 22:13:34 - INFO - New car was added
+2024-06-19 22:13:47 - INFO - All cars with limit=None and offset=None
+2024-06-19 23:32:18 - INFO - API stopped
+2024-06-19 23:32:22 - INFO - API started
+2024-06-19 23:32:22 - INFO - Database initialization complete
+2024-06-19 23:32:46 - INFO - New car was added
+2024-06-19 23:33:05 - INFO - New car was added
+2024-06-19 23:33:16 - INFO - All cars with limit=None and offset=None
+2024-06-19 23:33:24 - INFO - All cars with limit=1 and offset=1
+2024-06-19 23:37:11 - INFO - API stopped

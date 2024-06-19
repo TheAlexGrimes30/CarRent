@@ -1,3 +1,4 @@
+import asyncio
 import sys
 from pathlib import Path
 
@@ -5,6 +6,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from admin.router import admin_router
 from app.logger_file import logger
 from db.orm import SyncOrm
 
@@ -12,6 +14,26 @@ BASE_DIR = Path(__file__).parent.parent
 sys.path.append(str(BASE_DIR))
 
 app = FastAPI()
+
+app.include_router(admin_router)
+
+
+async def initialize_database():
+    logger.info("API started")
+    sync_orm = SyncOrm()
+    sync_orm.drop_tables()
+    sync_orm.create_tables()
+    logger.info("Database initialization complete")
+
+
+@app.on_event("startup")
+async def startup_event():
+    asyncio.create_task(initialize_database())
+
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    logger.info("API stopped")
 
 
 @app.get("/")
@@ -27,13 +49,5 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-@app.on_event('stastup')
-async def server_start():
-    logger.info("API started")
-    sync_orm = SyncOrm()
-    sync_orm.drop_tables()
-    sync_orm.crate_tables()
-
 if __name__ == "__main__":
-    uvicorn.run(app, port=5432, host="localhost")
+    uvicorn.run(app, port=8000, host="localhost")
