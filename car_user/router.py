@@ -5,6 +5,7 @@ from typing import Optional
 from fastapi import APIRouter
 
 from app.logger_file import logger
+from db.models import CarsOrm
 from db.orm import SyncOrm
 
 BASE_DIR = Path(__file__).parent.parent
@@ -40,10 +41,11 @@ def get_cars_by_brand(car_brand: str, limit: Optional[int] = None, offset: Optio
     }
 
 
-@car_router.get("/all_cars/{car_class}")
+@car_router.get("/{car_class}")
 def get_cars_by_class(car_class: str, limit: Optional[int] = None, offset: Optional[int] = None):
     result = sync_orm.get_cars_by_class(car_class, limit, offset)
     logger.info(f"Cars {car_class} with limit={limit} and offset={offset}")
+    logger.info(f"{CarsOrm.car_class}")
     return {
         'data': result,
         'status': 'ok'

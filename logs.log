@@ -1,0 +1,15 @@
+2024-06-21 00:13:39 - INFO - API started
+2024-06-21 00:13:40 - INFO - Database initialization complete
+2024-06-21 00:14:48 - INFO - New car was added
+2024-06-21 00:14:51 - INFO - New car was added
+2024-06-21 00:15:03 - INFO - Cars A with limit=None and offset=None
+2024-06-21 00:15:06 - INFO - Cars A with limit=None and offset=None
+2024-06-21 00:15:08 - INFO - Cars A with limit=None and offset=None
+2024-06-21 00:15:45 - INFO - Cars A with limit=None and offset=None
+2024-06-21 00:16:04 - INFO - API stopped
+2024-06-21 00:16:08 - INFO - API started
+2024-06-21 00:16:08 - INFO - Database initialization complete
+2024-06-21 00:16:33 - INFO - New car was added
+2024-06-21 00:16:35 - INFO - New car was added
+2024-06-21 00:16:45 - INFO - Cars A with limit=None and offset=None
+2024-06-21 00:17:41 - INFO - API stopped
