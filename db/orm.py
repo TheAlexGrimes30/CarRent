@@ -4,6 +4,7 @@ from typing import Optional
 
 from sqlalchemy import select, delete
 
+from app.logger_file import logger
 from db.database import sync_engine, session_factory
 from db.models import Base, CarsOrm
 
@@ -171,7 +172,7 @@ class SyncOrm(object):
         """
         query = select(CarsOrm.car_id, CarsOrm.car_brand, CarsOrm.car_model, CarsOrm.rent_deposit,
                        CarsOrm.drive_unit, CarsOrm.car_year,
-                       CarsOrm.engine_power).where(CarsOrm.car_class == car_class)
+                       CarsOrm.engine_power, CarsOrm.car_photo).where(CarsOrm.car_class == car_class)
 
         return SyncOrm.execute_query_for_car(query, limit, offset)
 
@@ -330,3 +331,4 @@ class SyncOrm(object):
             print(f"Error {e}")
             session.rollback()
             raise
+
