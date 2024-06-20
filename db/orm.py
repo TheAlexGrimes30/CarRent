@@ -53,6 +53,23 @@ class SyncOrm(object):
                 drive_unit: str, car_fuel: str, car_year: int, engine_power: int,
                 transmission: str, description: str,
                 car_number: str, car_photo: str, car_status: str) -> None:
+        """
+        Метод для добавления нового автомобиля
+        :param car_brand:
+        :param car_model:
+        :param rent_deposit:
+        :param car_class:
+        :param drive_unit:
+        :param car_fuel:
+        :param car_year:
+        :param engine_power:
+        :param transmission:
+        :param description:
+        :param car_number:
+        :param car_photo:
+        :param car_status:
+        :return:
+        """
         car = CarsOrm(
             car_brand=car_brand,
             car_model=car_model,
