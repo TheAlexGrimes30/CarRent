@@ -4,7 +4,6 @@ from typing import Optional
 
 from sqlalchemy import select, delete
 
-from app.logger_file import logger
 from db.database import sync_engine, session_factory
 from db.models import Base, CarsOrm
 
@@ -97,31 +96,89 @@ class SyncOrm(object):
             raise
 
     @staticmethod
-    def get_cars_by_brand(car_brand: str, limit: Optional[int] = None, offset: Optional[int] = None) -> dict:
-        """
-        Метод для вывода автомобилей по бренду
-        :param car_brand:
-        :param limit:
-        :param offset:
-        :return:
-        """
+    def get_all_cars_for_admin(limit: Optional[int] = None, offset: Optional[int] = None):
         query = select(CarsOrm.car_id, CarsOrm.car_brand, CarsOrm.car_model, CarsOrm.rent_deposit,
-                       CarsOrm.drive_unit, CarsOrm.car_year,
-                       CarsOrm.engine_power, CarsOrm.car_photo).where(CarsOrm.car_brand == car_brand)
-
+                       CarsOrm.drive_unit, CarsOrm.car_year, CarsOrm.transmission,
+                       CarsOrm.engine_power, CarsOrm.car_photo)
         return SyncOrm.execute_query_for_car(query, limit, offset)
 
     @staticmethod
-    def get_all_cars(limit: Optional[int] = None, offset: Optional[int] = None):
+    def get_all_cars_for_user(limit: Optional[int] = None, offset: Optional[int] = None, min_rent: Optional[int] = None,
+                              max_rent: Optional[int] = None, car_brand: Optional[str] = None,
+                              car_model: Optional[str] = None, drive_unit: Optional[str] = None,
+                              min_year: Optional[int] = None, max_year: Optional[int] = None,
+                              min_engine_power: Optional[int] = None, max_engine_power: Optional[int] = None,
+                              transmission: Optional[str] = None, car_fuel: Optional[str] = None,
+                              car_class: Optional[str] = None):
         """
-        Метод для вывода всех автомобилей
+        Метод для вывода всех автомобилей с применением фильтрации
+        :param car_class:
+        :param car_fuel:
+        :param transmission:
+        :param max_engine_power:
+        :param min_engine_power:
+        :param max_year:
+        :param min_year:
+        :param drive_unit:
+        :param car_model:
+        :param car_brand:
+        :param max_rent:
+        :param min_rent:
         :param limit:
         :param offset:
         :return:
         """
         query = select(CarsOrm.car_id, CarsOrm.car_brand, CarsOrm.car_model, CarsOrm.rent_deposit,
-                       CarsOrm.drive_unit, CarsOrm.car_year,
+                       CarsOrm.drive_unit, CarsOrm.car_year, CarsOrm.transmission,
                        CarsOrm.engine_power, CarsOrm.car_photo)
+
+        if min_rent:
+            query = query.where(CarsOrm.rent_deposit >= min_rent)
+
+        if max_rent:
+            query = query.where(CarsOrm.rent_deposit <= max_rent)
+
+        if min_rent and max_rent:
+            if min_rent == max_rent:
+                query = query.where(CarsOrm.rent_deposit == min_rent)
+
+        if car_brand:
+            query = query.where(CarsOrm.car_brand == car_brand)
+
+        if car_model:
+            query = query.where(CarsOrm.car_model == car_model)
+
+        if drive_unit:
+            query = query.where(CarsOrm.drive_unit == drive_unit)
+
+        if min_year:
+            query = query.where(CarsOrm.car_year >= min_year)
+
+        if max_year:
+            query = query.where(CarsOrm.car_year <= max_year)
+
+        if min_year and max_year:
+            if min_year == max_year:
+                query = query.where(CarsOrm.car_year == min_year)
+
+        if min_engine_power:
+            query = query.where(CarsOrm.engine_power <= min_engine_power)
+
+        if max_engine_power:
+            query = query.where(CarsOrm.engine_power >= max_engine_power)
+
+        if min_engine_power and max_engine_power:
+            if min_engine_power == max_engine_power:
+                query = query.where(CarsOrm.engine_power == min_engine_power)
+
+        if transmission:
+            query = query.where(CarsOrm.transmission == transmission)
+
+        if car_fuel:
+            query = query.where(CarsOrm.car_fuel == car_fuel)
+
+        if car_class:
+            query = query.where(CarsOrm.car_class == car_class)
 
         return SyncOrm.execute_query_for_car(query, limit, offset)
 
@@ -160,21 +217,6 @@ class SyncOrm(object):
             print(f"Error {e}")
             session.rollback()
             raise
-
-    @staticmethod
-    def get_cars_by_class(car_class: str, limit: Optional[int] = None, offset: Optional[int] = None) -> dict:
-        """
-        Вывод автомобилей по их классам
-        :param car_class:
-        :param limit:
-        :param offset:
-        :return:
-        """
-        query = select(CarsOrm.car_id, CarsOrm.car_brand, CarsOrm.car_model, CarsOrm.rent_deposit,
-                       CarsOrm.drive_unit, CarsOrm.car_year,
-                       CarsOrm.engine_power, CarsOrm.car_photo).where(CarsOrm.car_class == car_class)
-
-        return SyncOrm.execute_query_for_car(query, limit, offset)
 
     @staticmethod
     def get_car_by_id_for_admin(car_id: int):
@@ -259,7 +301,7 @@ class SyncOrm(object):
         try:
             with session_factory() as session:
                 query = delete(CarsOrm).where(CarsOrm.car_id == car_id)
-                result = session.execute(query)
+                session.execute(query)
                 session.commit()
         except Exception as e:
             print(f"Error {e}")
@@ -331,4 +373,3 @@ class SyncOrm(object):
             print(f"Error {e}")
             session.rollback()
             raise
-

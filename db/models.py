@@ -1,10 +1,7 @@
-from typing import Optional
-from sqlalchemy import String, CheckConstraint, Integer, Column
-from sqlalchemy.orm import DeclarativeBase, mapped_column, Mapped
+from sqlalchemy import String, CheckConstraint, Integer
+from sqlalchemy.orm import DeclarativeBase, mapped_column, Mapped, declarative_base
 
-
-class Base(DeclarativeBase):
-    pass
+Base = declarative_base()
 
 
 class CarsOrm(Base):
@@ -16,6 +13,7 @@ class CarsOrm(Base):
         CheckConstraint('rent_deposit > 0'),
         CheckConstraint("car_class in ('A', 'B', 'C', 'D', 'E', 'F', 'M', 'S', 'J', 'truck', 'van')"),
         CheckConstraint("car_fuel in ('дизель', 'бензин', 'гибрид', 'электро', 'водород')"),
+        CheckConstraint("drive_unit in ('FWD', 'RWD', '4WD')"),
         CheckConstraint("transmission in ('АКПП', 'МКПП', 'Вариатор', 'Робот')"),
         CheckConstraint("car_status in ('0', '1')"),
         CheckConstraint("car_year > 1970")

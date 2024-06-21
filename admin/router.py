@@ -28,12 +28,19 @@ def get_all_cars(limit: Optional[int] = None, offset: Optional[int] = None):
     :param offset:
     :return:
     """
-    result = sync_orm.get_all_cars(limit, offset)
-    logger.info(f"All cars with limit={limit} and offset={offset}")
-    return {
-        'data': result,
-        'status': 'ok'
-    }
+    try:
+        result = sync_orm.get_all_cars_for_admin(limit, offset)
+        logger.info(f"All cars with limit={limit} and offset={offset}")
+        return {
+            'data': result,
+            'status': 'ok'
+        }
+    except Exception as e:
+        logger.error(f"Error fetching cars: {str(e)}")
+        return {
+            'status': 'error',
+            'description': 'Failed to fetch cars data'
+        }
 
 
 @admin_router.post('/add_car')

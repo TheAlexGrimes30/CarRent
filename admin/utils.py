@@ -22,8 +22,8 @@ def validate_car_number(car_number):
     :param car_number: Номер автомобиля
     :return: True если номер валиден, иначе False
     """
-    car_number_pattern = r'^[АВЕКМНОРСТУХ]{1}\d{3}[АВЕКМНОРСТУХ]{2}\d{2,3}$'
-    if isinstance(car_number, str) and re.match(car_number_pattern, car_number, re.IGNORECASE):
+    car_number_pattern = r'^[АВЕКМНОРСТУХавекмнорстух]\d{3}[АВЕКМНОРСТУХавекмнорстух]{2}$'
+    if isinstance(car_number, str) and re.match(car_number_pattern, car_number):
         return True
     else:
         return False
