@@ -1,17 +1,35 @@
 from typing import Optional
 
+from db.orm import SyncOrm
+
 
 def filter_car_data(min_rent: Optional[int] = None,
                     max_rent: Optional[int] = None, drive_unit: Optional[str] = None,
                     min_year: Optional[int] = None, max_year: Optional[int] = None,
                     min_engine_power: Optional[int] = None, max_engine_power: Optional[int] = None,
                     transmission: Optional[str] = None, car_fuel: Optional[str] = None,
-                    car_class: Optional[str] = None):
+                    car_class: Optional[str] = None, car_brand: Optional[str] = None,
+                    car_model: Optional[str] = None, car_status: Optional[str] = None):
     """
-        Валидация данных фильтрации автомобилей.
-        :return: Словарь с ошибками валидации, если они есть.
-        """
+    Метод для валидации данных автомобиля для фильтрации
+    :param min_rent:
+    :param max_rent:
+    :param drive_unit:
+    :param min_year:
+    :param max_year:
+    :param min_engine_power:
+    :param max_engine_power:
+    :param transmission:
+    :param car_fuel:
+    :param car_class:
+    :param car_brand:
+    :param car_model:
+    :param car_status:
+    :return:
+    """
     errors = {}
+    car_brands = SyncOrm.get_all_brands()
+    car_models = SyncOrm.get_all_models()
 
     if min_rent is not None:
         if min_rent <= 0:
@@ -52,5 +70,20 @@ def filter_car_data(min_rent: Optional[int] = None,
 
     if car_fuel is not None and car_fuel not in ['дизель', 'бензин', 'гибрид', 'электро', 'водород']:
         errors['car_fuel'] = 'Invalid car fuel data'
+
+    if car_status is not None and car_status not in ['0', '1']:
+        errors['car_status'] = 'Invalid car status data'
+
+    if car_brand is not None and len(car_brands) != 0 and car_brand not in car_brands:
+        errors['car_brand'] = 'Invalid car brand data'
+
+    if len(car_brands) == 0:
+        errors['car_brand'] = 'There are not car brands in database'
+
+    if len(car_models) == 0:
+        errors['car_model'] = 'There are not car models in database'
+
+    if car_model is not None and len(car_models) != 0 and car_model not in car_models:
+        errors['car_model'] = 'Invalid car model data'
 
     return errors if errors else None

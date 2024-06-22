@@ -97,6 +97,12 @@ class SyncOrm(object):
 
     @staticmethod
     def get_all_cars_for_admin(limit: Optional[int] = None, offset: Optional[int] = None):
+        """
+        Метод для вывода всех автомобилей админу
+        :param limit:
+        :param offset:
+        :return:
+        """
         query = select(CarsOrm.car_id, CarsOrm.car_brand, CarsOrm.car_model, CarsOrm.rent_deposit,
                        CarsOrm.drive_unit, CarsOrm.car_year, CarsOrm.transmission,
                        CarsOrm.engine_power, CarsOrm.car_photo)
@@ -109,9 +115,10 @@ class SyncOrm(object):
                               min_year: Optional[int] = None, max_year: Optional[int] = None,
                               min_engine_power: Optional[int] = None, max_engine_power: Optional[int] = None,
                               transmission: Optional[str] = None, car_fuel: Optional[str] = None,
-                              car_class: Optional[str] = None):
+                              car_class: Optional[str] = None, car_status: Optional[str] = None):
         """
-        Метод для вывода всех автомобилей с применением фильтрации
+        Метод для вывода всех автомобилей пользователю с применением фильтрации
+        :param car_status:
         :param car_class:
         :param car_fuel:
         :param transmission:
@@ -179,6 +186,15 @@ class SyncOrm(object):
 
         if car_class:
             query = query.where(CarsOrm.car_class == car_class)
+
+        if car_status:
+            query = query.where(CarsOrm.car_status == car_status)
+
+        if car_brand:
+            query = query.where(CarsOrm.car_brand == car_brand)
+
+        if car_model:
+            query = query.where(CarsOrm.car_model == car_model)
 
         return SyncOrm.execute_query_for_car(query, limit, offset)
 
@@ -369,6 +385,40 @@ class SyncOrm(object):
                     session.commit()
                 else:
                     print(f"Car with id {car_id} not found.")
+        except Exception as e:
+            print(f"Error {e}")
+            session.rollback()
+            raise
+
+    @staticmethod
+    def get_all_brands():
+        """
+        Метод, возвращающий список всех брендов авто
+        :return:
+        """
+        return SyncOrm.get_brands_or_models(CarsOrm.car_brand)
+
+    @staticmethod
+    def get_all_models():
+        """
+        Метод, возвращающий список всех моделей авто
+        :return:
+        """
+        return SyncOrm.get_brands_or_models(CarsOrm.car_model)
+
+    @staticmethod
+    def get_brands_or_models(data_for_query):
+        """
+        Метод, для возврата данных бренда или моделей авто
+        :param data_for_query:
+        :return:
+        """
+        try:
+            with session_factory() as session:
+                query = select(data_for_query).distinct()
+                result = session.execute(query).all()
+                result_list = [row[0] for row in result]
+            return result_list
         except Exception as e:
             print(f"Error {e}")
             session.rollback()

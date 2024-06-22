@@ -124,3 +124,10 @@
 2024-06-22 00:24:09 - INFO - All cars with limit=None and offset=None
 2024-06-22 00:24:21 - INFO - All cars with limit=None and offset=None
 2024-06-22 00:33:18 - INFO - API stopped
+2024-06-22 00:33:20 - INFO - API started
+2024-06-22 00:33:21 - INFO - Database initialization complete
+2024-06-22 00:34:05 - INFO - New car was added
+2024-06-22 00:34:07 - INFO - New car was added
+2024-06-22 00:34:07 - INFO - New car was added
+2024-06-22 00:34:19 - INFO - All cars with limit=None and offset=None
+2024-06-22 00:43:23 - INFO - API stopped
