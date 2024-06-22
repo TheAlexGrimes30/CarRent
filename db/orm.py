@@ -427,6 +427,13 @@ class SyncOrm(object):
     @staticmethod
     def get_search_data(search_string: Optional[str] = None, limit: Optional[int] = None,
                         offset: Optional[int] = None):
+        """
+        Метод для работы с поиском
+        :param search_string:
+        :param limit:
+        :param offset:
+        :return:
+        """
 
         try:
             with session_factory() as session:
@@ -457,5 +464,3 @@ class SyncOrm(object):
             print(f"Error {e}")
             session.rollback()
             raise
-
-
