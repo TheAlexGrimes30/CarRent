@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 from typing import Optional
 
-from sqlalchemy import select, delete
+from sqlalchemy import select, delete, or_
 
 from db.database import sync_engine, session_factory
 from db.models import Base, CarsOrm
@@ -423,3 +423,39 @@ class SyncOrm(object):
             print(f"Error {e}")
             session.rollback()
             raise
+
+    @staticmethod
+    def get_search_data(search_string: Optional[str] = None, limit: Optional[int] = None,
+                        offset: Optional[int] = None):
+
+        try:
+            with session_factory() as session:
+                query = select(CarsOrm)
+                if search_string:
+                    search_terms = search_string.split()
+                    if len(search_terms) == 1:
+                        search_term = f"%{search_terms[0]}%"
+                        query = query.where(or_(CarsOrm.car_brand.ilike(search_term),
+                                                CarsOrm.car_model.ilike(search_term)))
+
+                    elif len(search_terms) > 1:
+                        brand_term = f"%{search_terms[0]}%"
+                        model_term = f"%{search_terms[1]}%"
+                        query = query.where(CarsOrm.car_brand.ilike(brand_term)).where(
+                            CarsOrm.car_model.ilike(model_term))
+                if limit:
+                    query = query.limit(limit)
+                if offset:
+                    query = query.offset(offset)
+                result = session.execute(query).scalars().all()
+
+                if not result:
+                    return []
+
+            return result
+        except Exception as e:
+            print(f"Error {e}")
+            session.rollback()
+            raise
+
+

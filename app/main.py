@@ -10,6 +10,7 @@ from admin.router import admin_router
 from app.logger_file import logger
 from car_user.router import car_router
 from db.orm import SyncOrm
+from search.router import search_router
 
 BASE_DIR = Path(__file__).parent.parent
 sys.path.append(str(BASE_DIR))
@@ -18,6 +19,7 @@ app = FastAPI()
 
 app.include_router(admin_router)
 app.include_router(car_router)
+app.include_router(search_router)
 
 
 async def initialize_database():
