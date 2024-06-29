@@ -1,1 +1,2 @@
 *.env
+auth\certs\jwt-private.pem

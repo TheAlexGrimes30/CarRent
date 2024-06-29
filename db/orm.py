@@ -1,11 +1,13 @@
 import sys
+from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
 from sqlalchemy import select, delete, or_
+from sqlalchemy.exc import SQLAlchemyError
 
 from db.database import sync_engine, session_factory
-from db.models import Base, CarsOrm
+from db.models import Base, CarsOrm, UserOrm
 
 BASE_DIR = Path(__file__).parent.parent
 sys.path.append(str(BASE_DIR))
@@ -463,4 +465,53 @@ class SyncOrm(object):
         except Exception as e:
             print(f"Error {e}")
             session.rollback()
+            raise
+
+    @staticmethod
+    def get_user(email: str):
+        try:
+            with session_factory() as session:
+                query = select(
+                    UserOrm.user_id,
+                    UserOrm.username,
+                    UserOrm.email,
+                    UserOrm.hashed_password,
+                    UserOrm.driving_licence_date,
+                    UserOrm.gibdd_number,
+                    UserOrm.driving_licence_number,
+                    UserOrm.balance
+                ).where(UserOrm.email == email)
+
+                result = session.execute(query).first()
+                return result
+
+        except Exception as e:
+            print(f"Error {e}")
+            session.rollback()
+            raise
+
+    @staticmethod
+    def add_user(username: str, user_email: str, hashed_password: bytes,
+                 driving_licence_date: str, gibdd_number: str,
+                 driving_licence_number: str, balance: int) -> None:
+        try:
+            licence_date = datetime.strptime(driving_licence_date, '%d.%m.%Y').date()
+
+            user = UserOrm(
+                username=username,
+                email=user_email,
+                hashed_password=hashed_password,
+                driving_licence_date=licence_date,
+                gibdd_number=gibdd_number,
+                driving_licence_number=driving_licence_number,
+                balance=balance
+            )
+
+            with session_factory() as session:
+                session.add(user)
+                session.commit()
+        except SQLAlchemyError as e:
+            print(f"Error: {e}")
+            if 'session' in locals():
+                session.rollback()
             raise

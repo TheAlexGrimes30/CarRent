@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from admin.router import admin_router
 from app.logger_file import logger
+from auth.auth_jwt import auth_router
 from car_user.router import car_router
 from db.orm import SyncOrm
 from search.router import search_router
@@ -20,6 +21,7 @@ app = FastAPI()
 app.include_router(admin_router)
 app.include_router(car_router)
 app.include_router(search_router)
+app.include_router(auth_router)
 
 
 async def initialize_database():

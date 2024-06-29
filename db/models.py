@@ -1,5 +1,5 @@
-from sqlalchemy import String, CheckConstraint, Integer
-from sqlalchemy.orm import DeclarativeBase, mapped_column, Mapped, declarative_base
+from sqlalchemy import String, CheckConstraint, Integer, Date, ForeignKey
+from sqlalchemy.orm import mapped_column, Mapped, declarative_base
 
 Base = declarative_base()
 
@@ -33,3 +33,21 @@ class CarsOrm(Base):
     car_number: Mapped[str] = mapped_column(String(64), nullable=False)
     car_photo: Mapped[str] = mapped_column(String(256), nullable=False)
     car_status: Mapped[str] = mapped_column(String, nullable=False)
+
+
+class UserOrm(Base):
+    """
+    Модель таблицы, содержащая данные пользователя
+    """
+    __tablename__ = "users"
+    __table_args__ = (
+        CheckConstraint('balance > 0'),
+    )
+    user_id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    username: Mapped[str] = mapped_column(String(128), nullable=False)
+    email: Mapped[str] = mapped_column(String(64), nullable=False)
+    hashed_password: Mapped[bytes] = mapped_column(String(128), nullable=False)
+    driving_licence_date: Mapped[Date] = mapped_column(Date, nullable=False)
+    gibdd_number: Mapped[str] = mapped_column(String(16), nullable=False)
+    driving_licence_number: Mapped[str] = mapped_column(String(32), nullable=False)
+    balance: Mapped[int] = mapped_column(Integer, nullable=False)
