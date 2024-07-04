@@ -70,4 +70,5 @@ def validate_password(password: str, hashed_password: bytes):
     :param hashed_password:
     :return:
     """
+
     return bcrypt.checkpw(password.encode(), hashed_password)

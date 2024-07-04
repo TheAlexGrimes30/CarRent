@@ -1,4 +1,4 @@
-from sqlalchemy import String, CheckConstraint, Integer, Date, ForeignKey
+from sqlalchemy import String, CheckConstraint, Integer, Date, ForeignKey, Column, LargeBinary
 from sqlalchemy.orm import mapped_column, Mapped, declarative_base
 
 Base = declarative_base()
@@ -43,11 +43,12 @@ class UserOrm(Base):
     __table_args__ = (
         CheckConstraint('balance > 0'),
     )
-    user_id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    username: Mapped[str] = mapped_column(String(128), nullable=False)
-    email: Mapped[str] = mapped_column(String(64), nullable=False)
-    hashed_password: Mapped[bytes] = mapped_column(String(128), nullable=False)
-    driving_licence_date: Mapped[Date] = mapped_column(Date, nullable=False)
-    gibdd_number: Mapped[str] = mapped_column(String(16), nullable=False)
-    driving_licence_number: Mapped[str] = mapped_column(String(32), nullable=False)
-    balance: Mapped[int] = mapped_column(Integer, nullable=False)
+    user_id = Column(Integer, primary_key=True, autoincrement=True)
+    username = Column(String(128), nullable=False)
+    email = Column(String(64), nullable=False)
+    hashed_password = Column(LargeBinary, nullable=False)
+    driving_licence_date = Column(Date, nullable=False)
+    gibdd_number = Column(String(16), nullable=False)
+    driving_licence_number = Column(String(32), nullable=False)
+    balance = Column(Integer, nullable=False)
+
