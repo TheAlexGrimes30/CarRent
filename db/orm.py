@@ -27,30 +27,6 @@ class SyncOrm(object):
         return cls._instance
 
     @staticmethod
-    def drop_tables() -> None:
-        """
-        Метод удаляет все таблицы в базе данных
-        :return:
-        """
-        try:
-            Base.metadata.drop_all(sync_engine)
-            print("Tables deleted successfully.")
-        except Exception as e:
-            print(f"An error occurred: {e}")
-
-    @staticmethod
-    def create_tables() -> None:
-        """
-        Метод создаёт таблицы в базе данных
-        :return:
-        """
-        try:
-            Base.metadata.create_all(sync_engine)
-            print("Tables created successfully.")
-        except Exception as e:
-            print(f"An error occurred: {e}")
-
-    @staticmethod
     def add_car(car_brand: str, car_model: str, rent_deposit: int, car_class: str,
                 drive_unit: str, car_fuel: str, car_year: int, engine_power: int,
                 transmission: str, description: str,

@@ -25,8 +25,6 @@ app.include_router(search_router)
 async def initialize_database():
     logger.info("API started")
     sync_orm = SyncOrm()
-    sync_orm.drop_tables()
-    sync_orm.create_tables()
     logger.info("Database initialization complete")
 
 
