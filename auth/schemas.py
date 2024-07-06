@@ -1,18 +1,24 @@
-from datetime import date
-from typing import Optional
-
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel, EmailStr
 
 
-class UserSchema(BaseModel):
+class UserBase(BaseModel):
     username: str
-    email: EmailStr
+
+
+class UserCreate(UserBase):
     password: str
-    driving_licence_date: date
-    gibdd_number: str
-    driving_licence_number: str
-    balance: int
-    active: bool = True
+    email: EmailStr
+
+
+class UserResponse(UserBase):
+    id: int
+    is_active: str
+    is_admin: str
 
     class Config:
         orm_mode = True
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str

@@ -1,4 +1,4 @@
-from sqlalchemy import String, CheckConstraint, Integer, Date, ForeignKey, Column, LargeBinary
+from sqlalchemy import String, CheckConstraint, Integer, Date, ForeignKey, Column, LargeBinary, Boolean
 from sqlalchemy.orm import mapped_column, Mapped, declarative_base
 
 Base = declarative_base()
@@ -42,13 +42,12 @@ class UserOrm(Base):
     __tablename__ = "users"
     __table_args__ = (
         CheckConstraint('balance > 0'),
+        CheckConstraint("is_admin in ('0', '1')"),
+        CheckConstraint("is_active in ('0', '1')"),
     )
     user_id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String(128), nullable=False)
-    email = Column(String(64), nullable=False)
-    hashed_password = Column(LargeBinary, nullable=False)
-    driving_licence_date = Column(Date, nullable=False)
-    gibdd_number = Column(String(16), nullable=False)
-    driving_licence_number = Column(String(32), nullable=False)
-    balance = Column(Integer, nullable=False)
-
+    email = Column(String(64), nullable=False, unique=True)
+    hashed_password = Column(LargeBinary, nullable=False, unique=True)
+    is_active = Column(Boolean, default=False)
+    is_admin = Column(Boolean, default=False)

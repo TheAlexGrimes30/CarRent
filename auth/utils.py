@@ -1,74 +1,34 @@
+from __future__ import annotations
+
+import os
 from datetime import timedelta, datetime
 
-import bcrypt
 import jwt
+from dotenv import load_dotenv
+from passlib.context import CryptContext
 
-from auth.config import settings
-from typing import Union
+load_dotenv()
+SECRET_KEY = os.environ.get("SECRET_AUTH_KEY")
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-def encode_jwt(
-        payload: dict,
-        private_key: str = settings.auth_jwt.private_key_path.read_text(),
-        algorithm: str = settings.auth_jwt.algorithm,
-        expire_timedelta: Union[timedelta, None] = None,
-        expire_minutes: int = settings.auth_jwt.access_token_expire_minutes):
-    """
-    Генерация токена
-    :param payload:
-    :param private_key:
-    :param algorithm:
-    :param expire_timedelta:
-    :param expire_minutes:
-    :return:
-    """
-    to_encode = payload.copy()
-    now = datetime.utcnow()
-    if expire_timedelta:
-        expire = now + expire_timedelta
+def verify_password(password, hashed_password):
+    return pwd_context.verify(password, hashed_password)
+
+
+def get_password_hash(password):
+    return pwd_context.hash(password)
+
+
+def create_access_token(data: dict, expires_delta: timedelta | None = None):
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
     else:
-        expire = now + timedelta(minutes=expire_minutes)
-    to_encode.update(
-        exp=expire,
-        iat=now,
-    )
-
-    encoded = jwt.encode(to_encode, private_key, algorithm)
-    return encoded
-
-
-def decode_jwt(token: Union[str, bytes],
-               public_key: str = settings.auth_jwt.public_key_path.read_text(),
-               algorithm: str = settings.auth_jwt.algorithm):
-    """
-    Чтение и валидация токена
-    :param token:
-    :param public_key:
-    :param algorithm:
-    :return:
-    """
-
-    decoded = jwt.decode(token, public_key, algorithms=[algorithm])
-    return decoded
-
-
-def hash_password(password: str) -> bytes:
-    """
-    Метод для хэширования пароля
-    :param password:
-    :return:
-    """
-    salt = bcrypt.gensalt()
-    pwd_bytes: bytes = password.encode()
-    return bcrypt.hashpw(pwd_bytes, salt)
-
-
-def validate_password(password: str, hashed_password: bytes):
-    """
-    Метод для валидации пароля
-    :param password:
-    :param hashed_password:
-    :return:
-    """
-
-    return bcrypt.checkpw(password.encode(), hashed_password)
+        expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt

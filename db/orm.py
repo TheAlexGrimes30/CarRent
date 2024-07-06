@@ -476,42 +476,34 @@ class SyncOrm(object):
                     UserOrm.username,
                     UserOrm.email,
                     UserOrm.hashed_password,
-                    UserOrm.driving_licence_date,
-                    UserOrm.gibdd_number,
-                    UserOrm.driving_licence_number,
-                    UserOrm.balance
+                    UserOrm.is_active,
+                    UserOrm.is_admin
                 ).where(UserOrm.email == email)
 
                 result = session.execute(query).first()
                 return result
-
         except Exception as e:
             print(f"Error {e}")
             session.rollback()
             raise
 
     @staticmethod
-    def add_user(username: str, user_email: str, hashed_password: bytes,
-                 driving_licence_date: str, gibdd_number: str,
-                 driving_licence_number: str, balance: int) -> None:
+    def add_user(username: str, email: str, hashed_password: bytes,
+                 is_active: str, is_admin: str) -> None:
+        user = UserOrm(
+            username=username,
+            email=email,
+            hashed_password=hashed_password,
+            is_active=is_active,
+            is_admin=is_admin
+        )
+
         try:
-            licence_date = datetime.strptime(driving_licence_date, '%d.%m.%Y').date()
-
-            user = UserOrm(
-                username=username,
-                email=user_email,
-                hashed_password=hashed_password,
-                driving_licence_date=licence_date,
-                gibdd_number=gibdd_number,
-                driving_licence_number=driving_licence_number,
-                balance=balance
-            )
-
             with session_factory() as session:
-                session.add(user)
+                session.add_all([user])
                 session.commit()
-        except SQLAlchemyError as e:
-            print(f"Error: {e}")
-            if 'session' in locals():
-                session.rollback()
+        except Exception as e:
+            print(f"Error {e}")
+            session.rollback()
             raise
+

@@ -11,7 +11,7 @@ sys.path.append(str(DIR_PATH))
 
 sync_engine = create_engine(
     url=settings.DATABASE_URL_psycopg,
-    echo=False
+    echo=True
 )
 
 session_factory = sessionmaker(sync_engine)
