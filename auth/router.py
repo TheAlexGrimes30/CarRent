@@ -2,12 +2,14 @@ import jwt
 from fastapi import APIRouter, Depends, HTTPException, status, Form
 from fastapi.security import OAuth2PasswordBearer
 
+from starlette.status import HTTP_401_UNAUTHORIZED
+
 from app.logger_file import logger
 from auth.schemas import UserResponse, Token
 from auth.utils import get_password_hash, verify_password, create_access_token, SECRET_KEY, ALGORITHM
 from db.orm import SyncOrm
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/signin")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="signin")
 
 auth_router = APIRouter(
     prefix="/auth",
@@ -18,10 +20,19 @@ sync_orm = SyncOrm()
 
 
 @auth_router.post("/signup", response_model=UserResponse)
-def signup(username: str, email: str, password: str, is_active: bool, is_admin: bool):
+def signup(username: str, email: str, password: str, is_admin: bool):
+    signup_exception = HTTPException(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        detail="Error with sign up")
     try:
+        if "@" not in email:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid email format")
+
+        if len(password) < 8:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                                detail="Password too short, must be at least 8 characters")
         hashed_password = get_password_hash(password).encode('utf-8')
-        sync_orm.add_user(username, email, hashed_password, is_active, is_admin)
+        sync_orm.add_user(username, email, hashed_password, is_admin)
         user = sync_orm.get_user(email)
         return UserResponse(
             id=user.user_id,
@@ -29,8 +40,8 @@ def signup(username: str, email: str, password: str, is_active: bool, is_admin: 
             is_active=user.is_active,
             is_admin=user.is_admin
         )
-    except Exception as e:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Error: {e}")
+    except Exception:
+        raise signup_exception
 
 
 @auth_router.post("/signin", response_model=Token)
@@ -55,50 +66,28 @@ def signin(email: str = Form(...), password: str = Form(...)):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=f"Invalid credentials. Error: {e}")
 
 
-@auth_router.get("/me", response_model=UserResponse)
 def get_current_user(token: str = Depends(oauth2_scheme)):
-    credential_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
+    credentials_exception = HTTPException(
+        status_code=HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
-        logger.info(f"Received token: {token}")
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        logger.info(f"Decoded payload: {payload}")
-        username: str = payload.get("sub")
-        email: str = payload.get("email")
-
-        if username is None or email is None:
-            logger.warning("Invalid token: Missing username or email")
-            raise credential_exception
-
+        email: str = payload.get("sub")
+        if email is None:
+            raise credentials_exception
         user = sync_orm.get_user(email)
         if user is None:
-            logger.warning("User not found")
-            raise credential_exception
-
-        return UserResponse(
-            id=user.user_id,
-            username=user.username,
-            email=user.email,
-            is_active=user.is_active,
-            is_admin=user.is_admin
-        )
-
+            raise credentials_exception
+        return user
     except jwt.ExpiredSignatureError:
-        logger.warning("Token has expired")
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
-                            detail="Token has expired",
-                            headers={"WWW-Authenticate": "Bearer"})
-
-    except jwt.InvalidTokenError:
-        logger.warning("Invalid token")
-        raise credential_exception
-
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token has expired")
     except Exception as e:
-        logger.error(f"Exception while reading current user data: {e}")
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                            detail=f"Server error: {str(e)}")
+        logger.error(f"Error during token validation: {e}")
+        raise credentials_exception
 
 
+@auth_router.get("/users/me", response_model=UserResponse)
+async def read_users_me(current_user: UserResponse = Depends(get_current_user)):
+    return current_user

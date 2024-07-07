@@ -42,12 +42,10 @@ class UserOrm(Base):
     __tablename__ = "users"
     __table_args__ = (
         CheckConstraint('balance > 0'),
-        CheckConstraint("is_admin in ('0', '1')"),
-        CheckConstraint("is_active in ('0', '1')"),
+        CheckConstraint("is_admin in ('0', '1')")
     )
     user_id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String(128), nullable=False)
     email = Column(String(64), nullable=False, unique=True)
     hashed_password = Column(LargeBinary, nullable=False, unique=True)
-    is_active = Column(Boolean, default=False)
     is_admin = Column(Boolean, default=False)

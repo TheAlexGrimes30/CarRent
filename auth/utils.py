@@ -5,6 +5,7 @@ from datetime import timedelta, datetime
 
 import jwt
 from dotenv import load_dotenv
+from fastapi_users.authentication import CookieTransport, JWTStrategy, AuthenticationBackend
 from passlib.context import CryptContext
 
 load_dotenv()
