@@ -465,7 +465,7 @@ class SyncOrm(object):
 
     @staticmethod
     def add_user(username: str, email: str, hashed_password: bytes,
-                 is_active: str, is_admin: str) -> None:
+                 is_active: bool, is_admin: bool) -> None:
         user = UserOrm(
             username=username,
             email=email,
@@ -482,4 +482,34 @@ class SyncOrm(object):
             print(f"Error {e}")
             session.rollback()
             raise
+
+    @staticmethod
+    def get_all_users(limit: Optional[int] = None, offset: Optional[int] = None):
+        try:
+            with session_factory() as session:
+                query = select(UserOrm.user_id, UserOrm.username, UserOrm.email,
+                               UserOrm.hashed_password, UserOrm.is_active, UserOrm.is_admin)
+                if limit:
+                    query = query.where(limit=limit)
+                if offset:
+                    query = query.where(offset=offset)
+                result = session.execute(query).all()
+                result_dict = dict()
+
+                for element in result:
+                    result_dict[element.user_id] = {
+                        "username": element.username,
+                        "email": element.email,
+                        "hashed_password": element.hashed_password,
+                        "is_active": element.is_active,
+                        "is_admin": element.is_admin
+                    }
+                return result_dict
+
+        except Exception as e:
+            print(f"Error: {e}")
+            session.rollback()
+            raise
+
+
 

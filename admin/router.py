@@ -161,3 +161,26 @@ def get_car_by_id(car_id: int):
         'data': result,
         'status': 'ok'
     }
+
+
+@admin_router.get('/get_all_users')
+def get_all_users(limit: Optional[int] = None, offset: Optional[int] = None):
+    """
+        Вывод всех автомобилей
+        :param limit:
+        :param offset:
+        :return:
+    """
+    try:
+        result = sync_orm.get_all_users(limit, offset)
+        logger.info(f"All users with limit={limit} and offset={offset}")
+        return {
+            'data': result,
+            'status': 'ok'
+        }
+    except Exception as e:
+        logger.error(f"Error fetching users: {str(e)}")
+        return {
+            'status': 'error',
+            'description': 'Failed to fetch users data'
+        }
