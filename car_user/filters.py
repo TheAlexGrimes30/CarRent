@@ -1,15 +1,15 @@
 from typing import Optional
 
-from db.orm import SyncOrm
+from db.orm import AsyncOrm
 
 
-def filter_car_data(min_rent: Optional[int] = None,
-                    max_rent: Optional[int] = None, drive_unit: Optional[str] = None,
-                    min_year: Optional[int] = None, max_year: Optional[int] = None,
-                    min_engine_power: Optional[int] = None, max_engine_power: Optional[int] = None,
-                    transmission: Optional[str] = None, car_fuel: Optional[str] = None,
-                    car_class: Optional[str] = None, car_brand: Optional[str] = None,
-                    car_model: Optional[str] = None, car_status: Optional[str] = None):
+async def filter_car_data(min_rent: Optional[int] = None,
+                          max_rent: Optional[int] = None, drive_unit: Optional[str] = None,
+                          min_year: Optional[int] = None, max_year: Optional[int] = None,
+                          min_engine_power: Optional[int] = None, max_engine_power: Optional[int] = None,
+                          transmission: Optional[str] = None, car_fuel: Optional[str] = None,
+                          car_class: Optional[str] = None, car_brand: Optional[str] = None,
+                          car_model: Optional[str] = None, car_status: Optional[str] = None):
     """
     Метод для валидации данных автомобиля для фильтрации
     :param min_rent:
@@ -28,8 +28,8 @@ def filter_car_data(min_rent: Optional[int] = None,
     :return:
     """
     errors = {}
-    car_brands = SyncOrm.get_all_brands()
-    car_models = SyncOrm.get_all_models()
+    car_brands = await AsyncOrm.get_all_brands()
+    car_models = await AsyncOrm.get_all_models()
 
     if min_rent is not None:
         if min_rent <= 0:

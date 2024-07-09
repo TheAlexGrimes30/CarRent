@@ -1,8 +1,8 @@
 from fastapi import WebSocket
 
-from db.orm import SyncOrm
+from db.orm import AsyncOrm
 
-sync_orm = SyncOrm()
+async_orm = AsyncOrm()
 
 
 class ConnectionManager(object):

@@ -1,4 +1,5 @@
-from sqlalchemy import String, CheckConstraint, Integer, Date, ForeignKey, Column, LargeBinary, Boolean
+from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
+from sqlalchemy import String, CheckConstraint, Integer, Column, LargeBinary, Boolean
 from sqlalchemy.orm import mapped_column, Mapped, declarative_base
 
 Base = declarative_base()
@@ -35,17 +36,16 @@ class CarsOrm(Base):
     car_status: Mapped[str] = mapped_column(String, nullable=False)
 
 
-class UserOrm(Base):
+class UserOrm(SQLAlchemyBaseUserTable[int], Base):
     """
     Модель таблицы, содержащая данные пользователя
     """
     __tablename__ = "users"
-    __table_args__ = (
-        CheckConstraint('balance > 0'),
-        CheckConstraint("is_admin in ('0', '1')")
-    )
-    user_id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String(128), nullable=False)
     email = Column(String(64), nullable=False, unique=True)
-    hashed_password = Column(LargeBinary, nullable=False, unique=True)
+    hashed_password = Column(LargeBinary, nullable=False)
     is_admin = Column(Boolean, default=False)
+    is_active = Column(Boolean, default=True, nullable=False)
+    is_superuser = Column(Boolean, default=False, nullable=False)
+    is_verified = Column(Boolean, default=False, nullable=False)

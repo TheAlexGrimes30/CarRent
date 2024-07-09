@@ -1,19 +1,18 @@
 import sys
-from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
 from sqlalchemy import select, delete, or_
-from sqlalchemy.exc import SQLAlchemyError
 
-from db.database import sync_engine, session_factory
-from db.models import Base, CarsOrm, UserOrm
+from app.logger_file import logger
+from db.database import async_session_factory
+from db.models import CarsOrm
 
 BASE_DIR = Path(__file__).parent.parent
 sys.path.append(str(BASE_DIR))
 
 
-class SyncOrm(object):
+class AsyncOrm(object):
     """
     Класс для работы с базой данных
     с применением паттерна Singleton
@@ -27,10 +26,10 @@ class SyncOrm(object):
         return cls._instance
 
     @staticmethod
-    def add_car(car_brand: str, car_model: str, rent_deposit: int, car_class: str,
-                drive_unit: str, car_fuel: str, car_year: int, engine_power: int,
-                transmission: str, description: str,
-                car_number: str, car_photo: str, car_status: str) -> None:
+    async def add_car(car_brand: str, car_model: str, rent_deposit: int, car_class: str,
+                      drive_unit: str, car_fuel: str, car_year: int, engine_power: int,
+                      transmission: str, description: str,
+                      car_number: str, car_photo: str, car_status: str) -> None:
         """
         Метод для добавления нового автомобиля
         :param car_brand:
@@ -65,16 +64,16 @@ class SyncOrm(object):
         )
 
         try:
-            with session_factory() as session:
+            async with async_session_factory() as session:
                 session.add_all([car])
-                session.commit()
+                await session.commit()
         except Exception as e:
             print(f"Error {e}")
             session.rollback()
             raise
 
     @staticmethod
-    def get_all_cars_for_admin(limit: Optional[int] = None, offset: Optional[int] = None):
+    async def get_all_cars_for_admin(limit: Optional[int] = None, offset: Optional[int] = None):
         """
         Метод для вывода всех автомобилей админу
         :param limit:
@@ -84,16 +83,17 @@ class SyncOrm(object):
         query = select(CarsOrm.car_id, CarsOrm.car_brand, CarsOrm.car_model, CarsOrm.rent_deposit,
                        CarsOrm.drive_unit, CarsOrm.car_year, CarsOrm.transmission,
                        CarsOrm.engine_power, CarsOrm.car_photo)
-        return SyncOrm.execute_query_for_car(query, limit, offset)
+        return await AsyncOrm.execute_query_for_car(query, limit, offset)
 
     @staticmethod
-    def get_all_cars_for_user(limit: Optional[int] = None, offset: Optional[int] = None, min_rent: Optional[int] = None,
-                              max_rent: Optional[int] = None, car_brand: Optional[str] = None,
-                              car_model: Optional[str] = None, drive_unit: Optional[str] = None,
-                              min_year: Optional[int] = None, max_year: Optional[int] = None,
-                              min_engine_power: Optional[int] = None, max_engine_power: Optional[int] = None,
-                              transmission: Optional[str] = None, car_fuel: Optional[str] = None,
-                              car_class: Optional[str] = None, car_status: Optional[str] = None):
+    async def get_all_cars_for_user(limit: Optional[int] = None, offset: Optional[int] = None,
+                                    min_rent: Optional[int] = None,
+                                    max_rent: Optional[int] = None, car_brand: Optional[str] = None,
+                                    car_model: Optional[str] = None, drive_unit: Optional[str] = None,
+                                    min_year: Optional[int] = None, max_year: Optional[int] = None,
+                                    min_engine_power: Optional[int] = None, max_engine_power: Optional[int] = None,
+                                    transmission: Optional[str] = None, car_fuel: Optional[str] = None,
+                                    car_class: Optional[str] = None, car_status: Optional[str] = None):
         """
         Метод для вывода всех автомобилей пользователю с применением фильтрации
         :param car_status:
@@ -174,29 +174,32 @@ class SyncOrm(object):
         if car_model:
             query = query.where(CarsOrm.car_model == car_model)
 
-        return SyncOrm.execute_query_for_car(query, limit, offset)
+        return await AsyncOrm.execute_query_for_car(query, limit, offset)
 
     @staticmethod
-    def execute_query_for_car(query, limit: Optional[int] = None, offset: Optional[int] = None) -> dict:
-        """
-        Метод для выполнения запросов для CarsORM
-        :param query:
-        :param limit:
-        :param offset:
-        :return:
-        """
+    async def execute_query_for_car(query, limit: Optional[int] = None, offset: Optional[int] = None) -> dict:
         try:
-            with session_factory() as session:
+            async with async_session_factory() as session:
+                logger.info(f"Executing query: {query}")
+
                 if limit is not None:
-                    query = query.limit(limit=limit)
+                    query = query.limit(limit)
+                    logger.info(f"Applying limit: {limit}")
 
                 if offset is not None:
-                    query = query.offset(offset=offset)
+                    query = query.offset(offset)
+                    logger.info(f"Applying offset: {offset}")
 
-                result = session.execute(query).all()
+                result = await session.execute(query)
+                result_list = result.all()
                 result_dict = dict()
 
-                for element in result:
+                logger.info(f"Query result: {result_list}")
+
+                # Проверяем, что элементы в result_list являются объектами CarsOrm
+                logger.info(f"result_list: {result}")
+                for element in result_list:
+                    logger.info(f"element: {element}")
                     result_dict[element.car_id] = {
                         "car_brand": element.car_brand,
                         "car_model": element.car_model,
@@ -206,26 +209,26 @@ class SyncOrm(object):
                         "engine_power": element.engine_power,
                         "car_photo": element.car_photo
                     }
+
                 return result_dict
         except Exception as e:
-            print(f"Error {e}")
-            session.rollback()
-            raise
+            logger.error(f"Error executing query: {e}")
+            raise Exception("Failed to fetch cars data")
 
     @staticmethod
-    def get_car_by_id_for_admin(car_id: int):
+    async def get_car_by_id_for_admin(car_id: int):
         """
         Метод для получения данных автомобиля (для администратора)
         :param car_id:
         :return:
         """
         try:
-            with session_factory() as session:
+            async with async_session_factory() as session:
                 query = select(CarsOrm).where(CarsOrm.car_id == car_id)
-                result = session.execute(query).first()
+                result = await session.execute(query)
+                car_instance = result.scalars().first()
 
-                if result is not None:
-                    car_instance = result[0]
+                if car_instance is not None:
                     car_data = {column.key: getattr(car_instance, column.key) for column in
                                 car_instance.__table__.columns}
                     return car_data
@@ -233,18 +236,18 @@ class SyncOrm(object):
                     return None
         except Exception as e:
             print(f"Error {e}")
-            session.rollback()
+            await session.rollback()
             raise
 
     @staticmethod
-    def get_car_by_id_for_user(car_id: int):
+    async def get_car_by_id_for_user(car_id: int):
         """
         Метод для получения данных автомобиля (для пользователя)
         :param car_id:
         :return:
         """
-        try:
-            with session_factory() as session:
+        async with async_session_factory() as session:
+            try:
                 query = select(
                     CarsOrm.car_id,
                     CarsOrm.car_brand,
@@ -260,56 +263,57 @@ class SyncOrm(object):
                     CarsOrm.car_photo
                 ).where(CarsOrm.car_id == car_id)
 
-                result = session.execute(query).first()
+                result = await session.execute(query)
+                car = result.fetchone()
 
-                if result is not None:
+                if car is not None:
                     car_data = {
-                        "car_id": result.car_id,
-                        "car_brand": result.car_brand,
-                        "car_model": result.car_model,
-                        "rent_deposit": result.rent_deposit,
-                        "car_class": result.car_class,
-                        "drive_unit": result.drive_unit,
-                        "car_fuel": result.car_fuel,
-                        "car_year": result.car_year,
-                        "engine_power": result.engine_power,
-                        "transmission": result.transmission,
-                        "description": result.description,
-                        "car_photo": result.car_photo
+                        "car_id": car.car_id,
+                        "car_brand": car.car_brand,
+                        "car_model": car.car_model,
+                        "rent_deposit": car.rent_deposit,
+                        "car_class": car.car_class,
+                        "drive_unit": car.drive_unit,
+                        "car_fuel": car.car_fuel,
+                        "car_year": car.car_year,
+                        "engine_power": car.engine_power,
+                        "transmission": car.transmission,
+                        "description": car.description,
+                        "car_photo": car.car_photo
                     }
                     return car_data
                 else:
                     return None
-        except Exception as e:
-            print(f"Error {e}")
-            session.rollback()
-            raise
+            except Exception as e:
+                print(f"Error {e}")
+                await session.rollback()
+                raise
 
     @staticmethod
-    def delete_car_by_id(car_id: int) -> None:
+    async def delete_car_by_id(car_id: int) -> None:
         """
         Метод для удаления автомобиля по его id
         :param car_id:
         :return:
         """
         try:
-            with session_factory() as session:
+            async with async_session_factory() as session:
                 query = delete(CarsOrm).where(CarsOrm.car_id == car_id)
-                session.execute(query)
-                session.commit()
+                await session.execute(query)
+                await session.commit()
         except Exception as e:
             print(f"Error {e}")
             session.rollback()
             raise
 
     @staticmethod
-    def update_car_by_id(car_id: int, car_brand: Optional[str] = None, car_model: Optional[str] = None,
-                         rent_deposit: Optional[int] = None, car_class: Optional[str] = None,
-                         drive_unit: Optional[str] = None, car_fuel: Optional[str] = None,
-                         car_year: Optional[int] = None, engine_power: Optional[int] = None,
-                         transmission: Optional[str] = None, description: Optional[str] = None,
-                         car_number: Optional[str] = None, car_photo: Optional[str] = None,
-                         car_status: Optional[str] = None) -> None:
+    async def update_car_by_id(car_id: int, car_brand: Optional[str] = None, car_model: Optional[str] = None,
+                               rent_deposit: Optional[int] = None, car_class: Optional[str] = None,
+                               drive_unit: Optional[str] = None, car_fuel: Optional[str] = None,
+                               car_year: Optional[int] = None, engine_power: Optional[int] = None,
+                               transmission: Optional[str] = None, description: Optional[str] = None,
+                               car_number: Optional[str] = None, car_photo: Optional[str] = None,
+                               car_status: Optional[str] = None) -> None:
         """
         Метод для редактирования данных автомобиля
         :param car_id:
@@ -329,8 +333,9 @@ class SyncOrm(object):
         :return:
         """
         try:
-            with session_factory() as session:
-                car = session.query(CarsOrm).where(CarsOrm.car_id == car_id).one_or_none()
+            async with async_session_factory() as session:
+                result = await session.execute(select(CarsOrm).where(CarsOrm.car_id == car_id))
+                car = result.scalars().one_or_none()
 
                 if car is not None:
                     if car_brand is not None:
@@ -360,42 +365,43 @@ class SyncOrm(object):
                     if car_status is not None:
                         car.car_status = car_status
 
-                    session.commit()
+                    await session.commit()
                 else:
                     print(f"Car with id {car_id} not found.")
         except Exception as e:
             print(f"Error {e}")
-            session.rollback()
+            await session.rollback()
             raise
 
     @staticmethod
-    def get_all_brands():
+    async def get_all_brands():
         """
         Метод, возвращающий список всех брендов авто
         :return:
         """
-        return SyncOrm.get_brands_or_models(CarsOrm.car_brand)
+        return await AsyncOrm.get_brands_or_models(CarsOrm.car_brand)
 
     @staticmethod
-    def get_all_models():
+    async def get_all_models():
         """
         Метод, возвращающий список всех моделей авто
         :return:
         """
-        return SyncOrm.get_brands_or_models(CarsOrm.car_model)
+        return await AsyncOrm.get_brands_or_models(CarsOrm.car_model)
 
     @staticmethod
-    def get_brands_or_models(data_for_query):
+    async def get_brands_or_models(data_for_query):
         """
         Метод, для возврата данных бренда или моделей авто
         :param data_for_query:
         :return:
         """
         try:
-            with session_factory() as session:
+            async with async_session_factory() as session:
                 query = select(data_for_query).distinct()
-                result = session.execute(query).all()
-                result_list = [row[0] for row in result]
+                result = await session.execute(query)
+                result_data = result.all()
+                result_list = [row[0] for row in result_data]
             return result_list
         except Exception as e:
             print(f"Error {e}")
@@ -403,8 +409,8 @@ class SyncOrm(object):
             raise
 
     @staticmethod
-    def get_search_data(search_string: Optional[str] = None, limit: Optional[int] = None,
-                        offset: Optional[int] = None):
+    async def get_search_data(search_string: Optional[str] = None, limit: Optional[int] = None,
+                              offset: Optional[int] = None):
         """
         Метод для работы с поиском
         :param search_string:
@@ -412,9 +418,8 @@ class SyncOrm(object):
         :param offset:
         :return:
         """
-
         try:
-            with session_factory() as session:
+            async with async_session_factory() as session:
                 query = select(CarsOrm)
                 if search_string:
                     search_terms = search_string.split()
@@ -432,81 +437,35 @@ class SyncOrm(object):
                     query = query.limit(limit)
                 if offset:
                     query = query.offset(offset)
-                result = session.execute(query).scalars().all()
 
-                if not result:
+                result = await session.execute(query)
+                cars = result.scalars().all()
+
+                if not cars:
                     return []
 
-            return result
-        except Exception as e:
-            print(f"Error {e}")
-            session.rollback()
-            raise
-
-    @staticmethod
-    def get_user(email: str):
-        try:
-            with session_factory() as session:
-                query = select(
-                    UserOrm.user_id,
-                    UserOrm.username,
-                    UserOrm.email,
-                    UserOrm.hashed_password,
-                    UserOrm.is_admin
-                ).where(UserOrm.email == email)
-
-                result = session.execute(query).first()
-                return result
-        except Exception as e:
-            print(f"Error {e}")
-            session.rollback()
-            raise
-
-    @staticmethod
-    def add_user(username: str, email: str, hashed_password: bytes,
-                 is_admin: bool) -> None:
-        user = UserOrm(
-            username=username,
-            email=email,
-            hashed_password=hashed_password,
-            is_admin=is_admin
-        )
-
-        try:
-            with session_factory() as session:
-                session.add_all([user])
-                session.commit()
-        except Exception as e:
-            print(f"Error {e}")
-            session.rollback()
-            raise
-
-    @staticmethod
-    def get_all_users(limit: Optional[int] = None, offset: Optional[int] = None):
-        try:
-            with session_factory() as session:
-                query = select(UserOrm.user_id, UserOrm.username, UserOrm.email,
-                               UserOrm.hashed_password, UserOrm.is_admin)
-                if limit:
-                    query = query.where(limit=limit)
-                if offset:
-                    query = query.where(offset=offset)
-                result = session.execute(query).all()
-                result_dict = dict()
-
-                for element in result:
-                    result_dict[element.user_id] = {
-                        "username": element.username,
-                        "email": element.email,
-                        "hashed_password": element.hashed_password,
-                        "is_admin": element.is_admin
+                car_data_list = [
+                    {
+                        "car_id": car.car_id,
+                        "car_brand": car.car_brand,
+                        "car_model": car.car_model,
+                        "rent_deposit": car.rent_deposit,
+                        "car_class": car.car_class,
+                        "drive_unit": car.drive_unit,
+                        "car_fuel": car.car_fuel,
+                        "car_year": car.car_year,
+                        "engine_power": car.engine_power,
+                        "transmission": car.transmission,
+                        "description": car.description,
+                        "car_number": car.car_number,
+                        "car_status": car.car_status,
+                        "car_photo": car.car_photo
                     }
-                return result_dict
+                    for car in cars
+                ]
 
+                return car_data_list
         except Exception as e:
-            print(f"Error: {e}")
-            session.rollback()
+            print(f"Error {e}")
+            await session.rollback()
             raise
-
-
-

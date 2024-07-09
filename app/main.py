@@ -3,14 +3,18 @@ import sys
 from pathlib import Path
 
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi_users import FastAPIUsers
 
 from admin.router import admin_router
 from app.logger_file import logger
-from auth.router import auth_router
+from auth.manager import get_user_manager
+from auth.schemas import UserRead, UserCreate
+from auth.utils import auth_backend
 from car_user.router import car_router
-from db.orm import SyncOrm
+from db.models import UserOrm
+from db.orm import AsyncOrm
 from search.router import search_router
 
 BASE_DIR = Path(__file__).parent.parent
@@ -18,15 +22,39 @@ sys.path.append(str(BASE_DIR))
 
 app = FastAPI()
 
+fastapi_users = FastAPIUsers[UserOrm, int](
+    get_user_manager,
+    [auth_backend]
+)
+
+app.include_router(
+    fastapi_users.get_auth_router(auth_backend),
+    prefix="/auth/jwt",
+    tags=["auth"],
+)
+
+app.include_router(
+    fastapi_users.get_register_router(UserRead, UserCreate),
+    prefix="/auth",
+    tags=["auth"]
+)
+
+current_user = fastapi_users.current_user()
+
+
+@app.get("/protected-route")
+def protected_route(user: UserOrm = Depends(current_user)):
+    return {"username": user.username, "email": user.email, "is_admin": user.is_admin}
+
+
 app.include_router(admin_router)
 app.include_router(car_router)
 app.include_router(search_router)
-app.include_router(auth_router)
 
 
 async def initialize_database():
     logger.info("API started")
-    sync_orm = SyncOrm()
+    async_orm = AsyncOrm()
     logger.info("Database initialization complete")
 
 
