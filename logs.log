@@ -2662,3 +2662,394 @@ Traceback (most recent call last):
 AttributeError: module 'bcrypt' has no attribute '__about__'
 2024-07-10 01:15:32 - INFO - ROLLBACK
 2024-07-10 01:18:13 - INFO - API stopped
+2024-07-10 01:18:15 - INFO - API started
+2024-07-10 01:18:15 - INFO - Database initialization complete
+2024-07-10 01:18:37 - INFO - select pg_catalog.version()
+2024-07-10 01:18:37 - INFO - [raw sql] ()
+2024-07-10 01:18:37 - INFO - select current_schema()
+2024-07-10 01:18:37 - INFO - [raw sql] ()
+2024-07-10 01:18:37 - INFO - show standard_conforming_strings
+2024-07-10 01:18:37 - INFO - [raw sql] ()
+2024-07-10 01:18:37 - INFO - BEGIN (implicit)
+2024-07-10 01:18:37 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_admin, users.is_active, users.is_superuser, users.is_verified 
+FROM users 
+WHERE lower(users.email) = lower($1::VARCHAR)
+2024-07-10 01:18:37 - INFO - [generated in 0.00022s] ('sagop@gmail.com',)
+2024-07-10 01:18:37 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2024-07-10 01:18:37 - INFO - ROLLBACK
+2024-07-10 01:18:44 - INFO - BEGIN (implicit)
+2024-07-10 01:18:44 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_admin, users.is_active, users.is_superuser, users.is_verified 
+FROM users 
+WHERE users.id = $1::INTEGER
+2024-07-10 01:18:44 - INFO - [generated in 0.00022s] (3,)
+2024-07-10 01:18:44 - INFO - ROLLBACK
+2024-07-10 01:19:29 - INFO - BEGIN (implicit)
+2024-07-10 01:19:29 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_admin, users.is_active, users.is_superuser, users.is_verified 
+FROM users 
+WHERE lower(users.email) = lower($1::VARCHAR)
+2024-07-10 01:19:29 - INFO - [cached since 52.68s ago] ('user@example.com',)
+2024-07-10 01:19:29 - INFO - ROLLBACK
+2024-07-10 01:19:34 - INFO - BEGIN (implicit)
+2024-07-10 01:19:34 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_admin, users.is_active, users.is_superuser, users.is_verified 
+FROM users 
+WHERE users.id = $1::INTEGER
+2024-07-10 01:19:34 - INFO - [cached since 49.69s ago] (1,)
+2024-07-10 01:19:34 - INFO - ROLLBACK
+2024-07-10 02:21:56 - INFO - API stopped
+2024-07-11 12:56:39 - INFO - API started
+2024-07-11 12:56:39 - INFO - Database initialization complete
+2024-07-11 12:57:04 - INFO - select pg_catalog.version()
+2024-07-11 12:57:04 - INFO - [raw sql] ()
+2024-07-11 12:57:04 - INFO - select current_schema()
+2024-07-11 12:57:04 - INFO - [raw sql] ()
+2024-07-11 12:57:04 - INFO - show standard_conforming_strings
+2024-07-11 12:57:04 - INFO - [raw sql] ()
+2024-07-11 12:57:04 - INFO - BEGIN (implicit)
+2024-07-11 12:57:04 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_admin, users.is_active, users.is_superuser, users.is_verified 
+FROM users
+2024-07-11 12:57:04 - INFO - [generated in 0.00037s] ()
+2024-07-11 12:57:04 - INFO - Query result: [(1, 'string', 'user@example.com', b'$2b$12$QzDRgGHU2Tic9B8OrsR96uWqSQpicSDMNnAEqX4nwpXTYdLk0GNZG', False, True, False, False), (2, 'string', 'user@exameferferple.com', b'$2b$12$6eCoBQRtqpbxrx5Wm9W7aOEjxeqOBipbDo5OVUf6v3hM594jt.tca', False, True, False, False), (3, 'sagop', 'sagop@gmail.com', b'$2b$12$Mn.jMWpIf3b595PsiC0zhO741SK.mXfchXhC48m38UqZH37qa.iMW', False, True, False, False), (4, 'sagop', 'sagop123@gmail.com', b'$2b$12$P8QcXPVLh/EzUXUc85u3VeAkNSM0arIboQiD2dOqp3CYOpjmkHtPS', False, True, False, False), (5, 'a', 'a@mail.com', b'$2b$12$0azc3qYZ/viscvwEaKXUCu7ReVM68/7stCGnaMTrDHSajfrVanCWi', False, True, False, False)]
+2024-07-11 12:57:04 - INFO - result_list: <sqlalchemy.engine.result.ChunkedIteratorResult object at 0x0000016EEDAF72C0>
+2024-07-11 12:57:04 - INFO - element: (1, 'string', 'user@example.com', b'$2b$12$QzDRgGHU2Tic9B8OrsR96uWqSQpicSDMNnAEqX4nwpXTYdLk0GNZG', False, True, False, False)
+2024-07-11 12:57:04 - INFO - element: (2, 'string', 'user@exameferferple.com', b'$2b$12$6eCoBQRtqpbxrx5Wm9W7aOEjxeqOBipbDo5OVUf6v3hM594jt.tca', False, True, False, False)
+2024-07-11 12:57:04 - INFO - element: (3, 'sagop', 'sagop@gmail.com', b'$2b$12$Mn.jMWpIf3b595PsiC0zhO741SK.mXfchXhC48m38UqZH37qa.iMW', False, True, False, False)
+2024-07-11 12:57:04 - INFO - element: (4, 'sagop', 'sagop123@gmail.com', b'$2b$12$P8QcXPVLh/EzUXUc85u3VeAkNSM0arIboQiD2dOqp3CYOpjmkHtPS', False, True, False, False)
+2024-07-11 12:57:04 - INFO - element: (5, 'a', 'a@mail.com', b'$2b$12$0azc3qYZ/viscvwEaKXUCu7ReVM68/7stCGnaMTrDHSajfrVanCWi', False, True, False, False)
+2024-07-11 12:57:04 - INFO - ROLLBACK
+2024-07-11 12:57:04 - INFO - All users with limit=None and offset=None
+2024-07-11 12:57:14 - INFO - Applying is_admin: True
+2024-07-11 12:57:14 - INFO - BEGIN (implicit)
+2024-07-11 12:57:14 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_admin, users.is_active, users.is_superuser, users.is_verified 
+FROM users 
+WHERE users.is_admin = true
+2024-07-11 12:57:14 - INFO - [generated in 0.00030s] ()
+2024-07-11 12:57:14 - INFO - Query result: []
+2024-07-11 12:57:14 - INFO - result_list: <sqlalchemy.engine.result.ChunkedIteratorResult object at 0x0000016EEDB03BC0>
+2024-07-11 12:57:14 - INFO - ROLLBACK
+2024-07-11 12:57:14 - INFO - All users with limit=None and offset=None
+2024-07-11 12:57:40 - INFO - Applying is_admin: False
+2024-07-11 12:57:40 - INFO - BEGIN (implicit)
+2024-07-11 12:57:40 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_admin, users.is_active, users.is_superuser, users.is_verified 
+FROM users 
+WHERE users.is_admin = false
+2024-07-11 12:57:40 - INFO - [generated in 0.00018s] ()
+2024-07-11 12:57:40 - INFO - Query result: [(1, 'string', 'user@example.com', b'$2b$12$QzDRgGHU2Tic9B8OrsR96uWqSQpicSDMNnAEqX4nwpXTYdLk0GNZG', False, True, False, False), (2, 'string', 'user@exameferferple.com', b'$2b$12$6eCoBQRtqpbxrx5Wm9W7aOEjxeqOBipbDo5OVUf6v3hM594jt.tca', False, True, False, False), (3, 'sagop', 'sagop@gmail.com', b'$2b$12$Mn.jMWpIf3b595PsiC0zhO741SK.mXfchXhC48m38UqZH37qa.iMW', False, True, False, False), (4, 'sagop', 'sagop123@gmail.com', b'$2b$12$P8QcXPVLh/EzUXUc85u3VeAkNSM0arIboQiD2dOqp3CYOpjmkHtPS', False, True, False, False), (5, 'a', 'a@mail.com', b'$2b$12$0azc3qYZ/viscvwEaKXUCu7ReVM68/7stCGnaMTrDHSajfrVanCWi', False, True, False, False)]
+2024-07-11 12:57:40 - INFO - result_list: <sqlalchemy.engine.result.ChunkedIteratorResult object at 0x0000016EEDB12E00>
+2024-07-11 12:57:40 - INFO - element: (1, 'string', 'user@example.com', b'$2b$12$QzDRgGHU2Tic9B8OrsR96uWqSQpicSDMNnAEqX4nwpXTYdLk0GNZG', False, True, False, False)
+2024-07-11 12:57:40 - INFO - element: (2, 'string', 'user@exameferferple.com', b'$2b$12$6eCoBQRtqpbxrx5Wm9W7aOEjxeqOBipbDo5OVUf6v3hM594jt.tca', False, True, False, False)
+2024-07-11 12:57:40 - INFO - element: (3, 'sagop', 'sagop@gmail.com', b'$2b$12$Mn.jMWpIf3b595PsiC0zhO741SK.mXfchXhC48m38UqZH37qa.iMW', False, True, False, False)
+2024-07-11 12:57:40 - INFO - element: (4, 'sagop', 'sagop123@gmail.com', b'$2b$12$P8QcXPVLh/EzUXUc85u3VeAkNSM0arIboQiD2dOqp3CYOpjmkHtPS', False, True, False, False)
+2024-07-11 12:57:40 - INFO - element: (5, 'a', 'a@mail.com', b'$2b$12$0azc3qYZ/viscvwEaKXUCu7ReVM68/7stCGnaMTrDHSajfrVanCWi', False, True, False, False)
+2024-07-11 12:57:40 - INFO - ROLLBACK
+2024-07-11 12:57:40 - INFO - All users with limit=None and offset=None
+2024-07-11 12:58:29 - INFO - API stopped
+2024-07-11 12:58:32 - INFO - API started
+2024-07-11 12:58:32 - INFO - Database initialization complete
+2024-07-11 12:59:26 - INFO - API stopped
+2024-07-11 13:00:45 - INFO - API started
+2024-07-11 13:00:45 - INFO - Database initialization complete
+2024-07-11 13:01:01 - INFO - select pg_catalog.version()
+2024-07-11 13:01:01 - INFO - [raw sql] ()
+2024-07-11 13:01:01 - INFO - select current_schema()
+2024-07-11 13:01:01 - INFO - [raw sql] ()
+2024-07-11 13:01:01 - INFO - show standard_conforming_strings
+2024-07-11 13:01:01 - INFO - [raw sql] ()
+2024-07-11 13:01:01 - INFO - BEGIN (implicit)
+2024-07-11 13:01:01 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_active, users.is_superuser, users.is_verified 
+FROM users 
+WHERE lower(users.email) = lower($1::VARCHAR)
+2024-07-11 13:01:01 - INFO - [generated in 0.00032s] ('user@example.com',)
+2024-07-11 13:01:01 - INFO - ROLLBACK
+2024-07-11 13:01:36 - INFO - BEGIN (implicit)
+2024-07-11 13:01:36 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_active, users.is_superuser, users.is_verified 
+FROM users 
+WHERE lower(users.email) = lower($1::VARCHAR)
+2024-07-11 13:01:36 - INFO - [cached since 34.43s ago] ('kolya@gmail.com',)
+2024-07-11 13:01:36 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2024-07-11 13:01:36 - INFO - INSERT INTO users (username, email, hashed_password, is_active, is_superuser, is_verified) VALUES ($1::VARCHAR, $2::VARCHAR, $3::BYTEA, $4::BOOLEAN, $5::BOOLEAN, $6::BOOLEAN) RETURNING users.id
+2024-07-11 13:01:36 - INFO - [generated in 0.00064s] ('string', 'kolya@gmail.com', b'$2b$12$Nk8OpAWR3/xzHJOwoHdn2OP1YtAZMBs0siDE3w9HiQz/OZR2k9kE2', True, False, False)
+2024-07-11 13:01:36 - INFO - COMMIT
+2024-07-11 13:01:36 - INFO - BEGIN (implicit)
+2024-07-11 13:01:36 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_active, users.is_superuser, users.is_verified 
+FROM users 
+WHERE users.id = $1::INTEGER
+2024-07-11 13:01:36 - INFO - [generated in 0.00047s] (6,)
+2024-07-11 13:01:36 - INFO - ROLLBACK
+2024-07-11 13:01:53 - ERROR - Error fetching users: get_all_users() takes from 0 to 5 positional arguments but 6 were given
+2024-07-11 13:01:58 - ERROR - Error fetching users: get_all_users() takes from 0 to 5 positional arguments but 6 were given
+2024-07-11 13:02:07 - ERROR - Error fetching users: get_all_users() takes from 0 to 5 positional arguments but 6 were given
+2024-07-11 13:02:27 - INFO - API stopped
+2024-07-11 13:02:30 - INFO - API started
+2024-07-11 13:02:30 - INFO - Database initialization complete
+2024-07-11 13:02:38 - ERROR - Error fetching users: local variable 'session' referenced before assignment
+2024-07-11 13:03:56 - INFO - API stopped
+2024-07-11 13:03:59 - INFO - API started
+2024-07-11 13:03:59 - INFO - Database initialization complete
+2024-07-11 13:04:06 - INFO - select pg_catalog.version()
+2024-07-11 13:04:06 - INFO - [raw sql] ()
+2024-07-11 13:04:06 - INFO - select current_schema()
+2024-07-11 13:04:06 - INFO - [raw sql] ()
+2024-07-11 13:04:06 - INFO - show standard_conforming_strings
+2024-07-11 13:04:06 - INFO - [raw sql] ()
+2024-07-11 13:04:06 - INFO - BEGIN (implicit)
+2024-07-11 13:04:06 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_active, users.is_superuser, users.is_verified 
+FROM users
+2024-07-11 13:04:06 - INFO - [generated in 0.00036s] ()
+2024-07-11 13:04:06 - INFO - Query result: [(1, 'string', 'user@example.com', b'$2b$12$QzDRgGHU2Tic9B8OrsR96uWqSQpicSDMNnAEqX4nwpXTYdLk0GNZG', True, False, False), (2, 'string', 'user@exameferferple.com', b'$2b$12$6eCoBQRtqpbxrx5Wm9W7aOEjxeqOBipbDo5OVUf6v3hM594jt.tca', True, False, False), (3, 'sagop', 'sagop@gmail.com', b'$2b$12$Mn.jMWpIf3b595PsiC0zhO741SK.mXfchXhC48m38UqZH37qa.iMW', True, False, False), (4, 'sagop', 'sagop123@gmail.com', b'$2b$12$P8QcXPVLh/EzUXUc85u3VeAkNSM0arIboQiD2dOqp3CYOpjmkHtPS', True, False, False), (5, 'a', 'a@mail.com', b'$2b$12$0azc3qYZ/viscvwEaKXUCu7ReVM68/7stCGnaMTrDHSajfrVanCWi', True, False, False), (6, 'string', 'kolya@gmail.com', b'$2b$12$Nk8OpAWR3/xzHJOwoHdn2OP1YtAZMBs0siDE3w9HiQz/OZR2k9kE2', True, False, False)]
+2024-07-11 13:04:06 - INFO - result_list: <sqlalchemy.engine.result.ChunkedIteratorResult object at 0x0000021A04A65340>
+2024-07-11 13:04:06 - INFO - element: (1, 'string', 'user@example.com', b'$2b$12$QzDRgGHU2Tic9B8OrsR96uWqSQpicSDMNnAEqX4nwpXTYdLk0GNZG', True, False, False)
+2024-07-11 13:04:06 - INFO - element: (2, 'string', 'user@exameferferple.com', b'$2b$12$6eCoBQRtqpbxrx5Wm9W7aOEjxeqOBipbDo5OVUf6v3hM594jt.tca', True, False, False)
+2024-07-11 13:04:06 - INFO - element: (3, 'sagop', 'sagop@gmail.com', b'$2b$12$Mn.jMWpIf3b595PsiC0zhO741SK.mXfchXhC48m38UqZH37qa.iMW', True, False, False)
+2024-07-11 13:04:06 - INFO - element: (4, 'sagop', 'sagop123@gmail.com', b'$2b$12$P8QcXPVLh/EzUXUc85u3VeAkNSM0arIboQiD2dOqp3CYOpjmkHtPS', True, False, False)
+2024-07-11 13:04:06 - INFO - element: (5, 'a', 'a@mail.com', b'$2b$12$0azc3qYZ/viscvwEaKXUCu7ReVM68/7stCGnaMTrDHSajfrVanCWi', True, False, False)
+2024-07-11 13:04:06 - INFO - element: (6, 'string', 'kolya@gmail.com', b'$2b$12$Nk8OpAWR3/xzHJOwoHdn2OP1YtAZMBs0siDE3w9HiQz/OZR2k9kE2', True, False, False)
+2024-07-11 13:04:06 - INFO - ROLLBACK
+2024-07-11 13:04:06 - INFO - All users with limit=None and offset=None
+2024-07-11 13:04:45 - INFO - API stopped
+2024-07-11 13:04:47 - INFO - API started
+2024-07-11 13:04:47 - INFO - Database initialization complete
+2024-07-11 13:05:08 - INFO - select pg_catalog.version()
+2024-07-11 13:05:08 - INFO - [raw sql] ()
+2024-07-11 13:05:08 - INFO - select current_schema()
+2024-07-11 13:05:08 - INFO - [raw sql] ()
+2024-07-11 13:05:08 - INFO - show standard_conforming_strings
+2024-07-11 13:05:08 - INFO - [raw sql] ()
+2024-07-11 13:05:08 - INFO - BEGIN (implicit)
+2024-07-11 13:05:08 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_active, users.is_superuser, users.is_verified 
+FROM users 
+WHERE lower(users.email) = lower($1::VARCHAR)
+2024-07-11 13:05:08 - INFO - [generated in 0.00034s] ('user@geymail.com',)
+2024-07-11 13:05:08 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2024-07-11 13:05:09 - INFO - INSERT INTO users (username, email, hashed_password, is_active, is_superuser, is_verified) VALUES ($1::VARCHAR, $2::VARCHAR, $3::BYTEA, $4::BOOLEAN, $5::BOOLEAN, $6::BOOLEAN) RETURNING users.id
+2024-07-11 13:05:09 - INFO - [generated in 0.00051s] ('string', 'user@geymail.com', b'$2b$12$4pteMPH83hQeEKEeUmOmd.HU.hxC/ugAnW4Yg63DDmvc83KlSmI5W', True, False, False)
+2024-07-11 13:05:09 - INFO - COMMIT
+2024-07-11 13:05:09 - INFO - BEGIN (implicit)
+2024-07-11 13:05:09 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_active, users.is_superuser, users.is_verified 
+FROM users 
+WHERE users.id = $1::INTEGER
+2024-07-11 13:05:09 - INFO - [generated in 0.00047s] (7,)
+2024-07-11 13:05:09 - INFO - ROLLBACK
+2024-07-11 13:05:16 - INFO - BEGIN (implicit)
+2024-07-11 13:05:16 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_active, users.is_superuser, users.is_verified 
+FROM users
+2024-07-11 13:05:16 - INFO - [generated in 0.00200s] ()
+2024-07-11 13:05:16 - INFO - Query result: [(1, 'string', 'user@example.com', b'$2b$12$QzDRgGHU2Tic9B8OrsR96uWqSQpicSDMNnAEqX4nwpXTYdLk0GNZG', True, False, False), (2, 'string', 'user@exameferferple.com', b'$2b$12$6eCoBQRtqpbxrx5Wm9W7aOEjxeqOBipbDo5OVUf6v3hM594jt.tca', True, False, False), (3, 'sagop', 'sagop@gmail.com', b'$2b$12$Mn.jMWpIf3b595PsiC0zhO741SK.mXfchXhC48m38UqZH37qa.iMW', True, False, False), (4, 'sagop', 'sagop123@gmail.com', b'$2b$12$P8QcXPVLh/EzUXUc85u3VeAkNSM0arIboQiD2dOqp3CYOpjmkHtPS', True, False, False), (5, 'a', 'a@mail.com', b'$2b$12$0azc3qYZ/viscvwEaKXUCu7ReVM68/7stCGnaMTrDHSajfrVanCWi', True, False, False), (6, 'string', 'kolya@gmail.com', b'$2b$12$Nk8OpAWR3/xzHJOwoHdn2OP1YtAZMBs0siDE3w9HiQz/OZR2k9kE2', True, False, False), (7, 'string', 'user@geymail.com', b'$2b$12$4pteMPH83hQeEKEeUmOmd.HU.hxC/ugAnW4Yg63DDmvc83KlSmI5W', True, False, False)]
+2024-07-11 13:05:16 - INFO - result_list: <sqlalchemy.engine.result.ChunkedIteratorResult object at 0x0000022812D1FB00>
+2024-07-11 13:05:16 - INFO - element: (1, 'string', 'user@example.com', b'$2b$12$QzDRgGHU2Tic9B8OrsR96uWqSQpicSDMNnAEqX4nwpXTYdLk0GNZG', True, False, False)
+2024-07-11 13:05:16 - INFO - element: (2, 'string', 'user@exameferferple.com', b'$2b$12$6eCoBQRtqpbxrx5Wm9W7aOEjxeqOBipbDo5OVUf6v3hM594jt.tca', True, False, False)
+2024-07-11 13:05:16 - INFO - element: (3, 'sagop', 'sagop@gmail.com', b'$2b$12$Mn.jMWpIf3b595PsiC0zhO741SK.mXfchXhC48m38UqZH37qa.iMW', True, False, False)
+2024-07-11 13:05:16 - INFO - element: (4, 'sagop', 'sagop123@gmail.com', b'$2b$12$P8QcXPVLh/EzUXUc85u3VeAkNSM0arIboQiD2dOqp3CYOpjmkHtPS', True, False, False)
+2024-07-11 13:05:16 - INFO - element: (5, 'a', 'a@mail.com', b'$2b$12$0azc3qYZ/viscvwEaKXUCu7ReVM68/7stCGnaMTrDHSajfrVanCWi', True, False, False)
+2024-07-11 13:05:16 - INFO - element: (6, 'string', 'kolya@gmail.com', b'$2b$12$Nk8OpAWR3/xzHJOwoHdn2OP1YtAZMBs0siDE3w9HiQz/OZR2k9kE2', True, False, False)
+2024-07-11 13:05:16 - INFO - element: (7, 'string', 'user@geymail.com', b'$2b$12$4pteMPH83hQeEKEeUmOmd.HU.hxC/ugAnW4Yg63DDmvc83KlSmI5W', True, False, False)
+2024-07-11 13:05:16 - INFO - ROLLBACK
+2024-07-11 13:05:16 - INFO - All users with limit=None and offset=None
+2024-07-11 13:05:28 - INFO - API stopped
+2024-07-11 13:05:30 - INFO - API started
+2024-07-11 13:05:30 - INFO - Database initialization complete
+2024-07-11 13:05:49 - INFO - select pg_catalog.version()
+2024-07-11 13:05:49 - INFO - [raw sql] ()
+2024-07-11 13:05:49 - INFO - select current_schema()
+2024-07-11 13:05:49 - INFO - [raw sql] ()
+2024-07-11 13:05:49 - INFO - show standard_conforming_strings
+2024-07-11 13:05:49 - INFO - [raw sql] ()
+2024-07-11 13:05:49 - INFO - BEGIN (implicit)
+2024-07-11 13:05:49 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_active, users.is_superuser, users.is_verified 
+FROM users 
+WHERE lower(users.email) = lower($1::VARCHAR)
+2024-07-11 13:05:49 - INFO - [generated in 0.00036s] ('user@examerfererefre.com',)
+2024-07-11 13:05:49 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2024-07-11 13:05:50 - INFO - INSERT INTO users (username, email, hashed_password, is_active, is_superuser, is_verified) VALUES ($1::VARCHAR, $2::VARCHAR, $3::BYTEA, $4::BOOLEAN, $5::BOOLEAN, $6::BOOLEAN) RETURNING users.id
+2024-07-11 13:05:50 - INFO - [generated in 0.00039s] ('string', 'user@examerfererefre.com', b'$2b$12$UB8UNBI7BN6kiRyKCM7hFeurFB3E5VllTl6Of3tijH2G9ljysWbHi', True, False, False)
+2024-07-11 13:05:50 - INFO - COMMIT
+2024-07-11 13:05:50 - INFO - BEGIN (implicit)
+2024-07-11 13:05:50 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_active, users.is_superuser, users.is_verified 
+FROM users 
+WHERE users.id = $1::INTEGER
+2024-07-11 13:05:50 - INFO - [generated in 0.00038s] (8,)
+2024-07-11 13:05:50 - INFO - ROLLBACK
+2024-07-11 13:12:03 - INFO - API stopped
+2024-07-11 13:12:06 - INFO - API started
+2024-07-11 13:12:06 - INFO - Database initialization complete
+2024-07-11 13:12:28 - INFO - select pg_catalog.version()
+2024-07-11 13:12:28 - INFO - [raw sql] ()
+2024-07-11 13:12:28 - INFO - select current_schema()
+2024-07-11 13:12:28 - INFO - [raw sql] ()
+2024-07-11 13:12:28 - INFO - show standard_conforming_strings
+2024-07-11 13:12:28 - INFO - [raw sql] ()
+2024-07-11 13:12:28 - INFO - BEGIN (implicit)
+2024-07-11 13:12:28 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_active, users.is_superuser, users.is_verified 
+FROM users 
+WHERE lower(users.email) = lower($1::VARCHAR)
+2024-07-11 13:12:28 - INFO - [generated in 0.00042s] ('zhenya@example.com',)
+2024-07-11 13:12:28 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2024-07-11 13:12:28 - INFO - INSERT INTO users (username, email, hashed_password, is_active, is_superuser, is_verified) VALUES ($1::VARCHAR, $2::VARCHAR, $3::BYTEA, $4::BOOLEAN, $5::BOOLEAN, $6::BOOLEAN) RETURNING users.id
+2024-07-11 13:12:28 - INFO - [generated in 0.00102s] ('string', 'zhenya@example.com', b'$2b$12$isdOCuf04sG1Ss6h1SiNze0CPBcl2CXjSRdFbpx7ASk3WwOkM//MO', True, True, False)
+2024-07-11 13:12:28 - INFO - COMMIT
+2024-07-11 13:12:28 - INFO - BEGIN (implicit)
+2024-07-11 13:12:28 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_active, users.is_superuser, users.is_verified 
+FROM users 
+WHERE users.id = $1::INTEGER
+2024-07-11 13:12:28 - INFO - [generated in 0.00039s] (9,)
+2024-07-11 13:12:28 - INFO - ROLLBACK
+2024-07-11 13:12:37 - INFO - Applying is_superuser: True
+2024-07-11 13:12:37 - INFO - BEGIN (implicit)
+2024-07-11 13:12:37 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_active, users.is_superuser, users.is_verified 
+FROM users 
+WHERE users.is_superuser = true
+2024-07-11 13:12:37 - INFO - [generated in 0.00028s] ()
+2024-07-11 13:12:37 - INFO - Query result: [(9, 'string', 'zhenya@example.com', b'$2b$12$isdOCuf04sG1Ss6h1SiNze0CPBcl2CXjSRdFbpx7ASk3WwOkM//MO', True, True, False)]
+2024-07-11 13:12:37 - INFO - result_list: <sqlalchemy.engine.result.ChunkedIteratorResult object at 0x0000020CE83698C0>
+2024-07-11 13:12:37 - INFO - element: (9, 'string', 'zhenya@example.com', b'$2b$12$isdOCuf04sG1Ss6h1SiNze0CPBcl2CXjSRdFbpx7ASk3WwOkM//MO', True, True, False)
+2024-07-11 13:12:37 - INFO - ROLLBACK
+2024-07-11 13:12:37 - INFO - All users with limit=None and offset=None
+2024-07-11 13:12:44 - INFO - Applying is_superuser: True
+2024-07-11 13:12:44 - INFO - BEGIN (implicit)
+2024-07-11 13:12:44 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_active, users.is_superuser, users.is_verified 
+FROM users 
+WHERE users.is_superuser = true
+2024-07-11 13:12:44 - INFO - [cached since 7.085s ago] ()
+2024-07-11 13:12:44 - INFO - Query result: [(9, 'string', 'zhenya@example.com', b'$2b$12$isdOCuf04sG1Ss6h1SiNze0CPBcl2CXjSRdFbpx7ASk3WwOkM//MO', True, True, False)]
+2024-07-11 13:12:44 - INFO - result_list: <sqlalchemy.engine.result.ChunkedIteratorResult object at 0x0000020CE836FAC0>
+2024-07-11 13:12:44 - INFO - element: (9, 'string', 'zhenya@example.com', b'$2b$12$isdOCuf04sG1Ss6h1SiNze0CPBcl2CXjSRdFbpx7ASk3WwOkM//MO', True, True, False)
+2024-07-11 13:12:44 - INFO - ROLLBACK
+2024-07-11 13:12:44 - INFO - All users with limit=None and offset=None
+2024-07-11 16:49:59 - INFO - API stopped
+2024-07-12 01:20:44 - INFO - API started
+2024-07-12 01:20:44 - INFO - Database initialization complete
+2024-07-12 01:21:51 - INFO - select pg_catalog.version()
+2024-07-12 01:21:51 - INFO - [raw sql] ()
+2024-07-12 01:21:51 - INFO - select current_schema()
+2024-07-12 01:21:51 - INFO - [raw sql] ()
+2024-07-12 01:21:51 - INFO - show standard_conforming_strings
+2024-07-12 01:21:51 - INFO - [raw sql] ()
+2024-07-12 01:21:51 - INFO - BEGIN (implicit)
+2024-07-12 01:21:51 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_active, users.is_superuser, users.is_verified 
+FROM users
+2024-07-12 01:21:51 - INFO - [generated in 0.00044s] ()
+2024-07-12 01:21:51 - INFO - Query result: [(1, 'string', 'user@example.com', b'$2b$12$QzDRgGHU2Tic9B8OrsR96uWqSQpicSDMNnAEqX4nwpXTYdLk0GNZG', True, False, False), (2, 'string', 'user@exameferferple.com', b'$2b$12$6eCoBQRtqpbxrx5Wm9W7aOEjxeqOBipbDo5OVUf6v3hM594jt.tca', True, False, False), (3, 'sagop', 'sagop@gmail.com', b'$2b$12$Mn.jMWpIf3b595PsiC0zhO741SK.mXfchXhC48m38UqZH37qa.iMW', True, False, False), (4, 'sagop', 'sagop123@gmail.com', b'$2b$12$P8QcXPVLh/EzUXUc85u3VeAkNSM0arIboQiD2dOqp3CYOpjmkHtPS', True, False, False), (5, 'a', 'a@mail.com', b'$2b$12$0azc3qYZ/viscvwEaKXUCu7ReVM68/7stCGnaMTrDHSajfrVanCWi', True, False, False), (6, 'string', 'kolya@gmail.com', b'$2b$12$Nk8OpAWR3/xzHJOwoHdn2OP1YtAZMBs0siDE3w9HiQz/OZR2k9kE2', True, False, False), (7, 'string', 'user@geymail.com', b'$2b$12$4pteMPH83hQeEKEeUmOmd.HU.hxC/ugAnW4Yg63DDmvc83KlSmI5W', True, False, False), (8, 'string', 'user@examerfererefre.com', b'$2b$12$UB8UNBI7BN6kiRyKCM7hFeurFB3E5VllTl6Of3tijH2G9ljysWbHi', True, False, False), (9, 'string', 'zhenya@example.com', b'$2b$12$isdOCuf04sG1Ss6h1SiNze0CPBcl2CXjSRdFbpx7ASk3WwOkM//MO', True, True, False)]
+2024-07-12 01:21:51 - INFO - result_list: <sqlalchemy.engine.result.ChunkedIteratorResult object at 0x000002319AAC9F80>
+2024-07-12 01:21:51 - INFO - element: (1, 'string', 'user@example.com', b'$2b$12$QzDRgGHU2Tic9B8OrsR96uWqSQpicSDMNnAEqX4nwpXTYdLk0GNZG', True, False, False)
+2024-07-12 01:21:51 - INFO - element: (2, 'string', 'user@exameferferple.com', b'$2b$12$6eCoBQRtqpbxrx5Wm9W7aOEjxeqOBipbDo5OVUf6v3hM594jt.tca', True, False, False)
+2024-07-12 01:21:51 - INFO - element: (3, 'sagop', 'sagop@gmail.com', b'$2b$12$Mn.jMWpIf3b595PsiC0zhO741SK.mXfchXhC48m38UqZH37qa.iMW', True, False, False)
+2024-07-12 01:21:51 - INFO - element: (4, 'sagop', 'sagop123@gmail.com', b'$2b$12$P8QcXPVLh/EzUXUc85u3VeAkNSM0arIboQiD2dOqp3CYOpjmkHtPS', True, False, False)
+2024-07-12 01:21:51 - INFO - element: (5, 'a', 'a@mail.com', b'$2b$12$0azc3qYZ/viscvwEaKXUCu7ReVM68/7stCGnaMTrDHSajfrVanCWi', True, False, False)
+2024-07-12 01:21:51 - INFO - element: (6, 'string', 'kolya@gmail.com', b'$2b$12$Nk8OpAWR3/xzHJOwoHdn2OP1YtAZMBs0siDE3w9HiQz/OZR2k9kE2', True, False, False)
+2024-07-12 01:21:51 - INFO - element: (7, 'string', 'user@geymail.com', b'$2b$12$4pteMPH83hQeEKEeUmOmd.HU.hxC/ugAnW4Yg63DDmvc83KlSmI5W', True, False, False)
+2024-07-12 01:21:51 - INFO - element: (8, 'string', 'user@examerfererefre.com', b'$2b$12$UB8UNBI7BN6kiRyKCM7hFeurFB3E5VllTl6Of3tijH2G9ljysWbHi', True, False, False)
+2024-07-12 01:21:51 - INFO - element: (9, 'string', 'zhenya@example.com', b'$2b$12$isdOCuf04sG1Ss6h1SiNze0CPBcl2CXjSRdFbpx7ASk3WwOkM//MO', True, True, False)
+2024-07-12 01:21:51 - INFO - ROLLBACK
+2024-07-12 01:21:51 - INFO - All users with limit=None and offset=None
+2024-07-12 01:22:30 - INFO - BEGIN (implicit)
+2024-07-12 01:22:30 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_active, users.is_superuser, users.is_verified 
+FROM users 
+WHERE lower(users.email) = lower($1::VARCHAR)
+2024-07-12 01:22:30 - INFO - [generated in 0.00068s] ('petya@gmail.com',)
+2024-07-12 01:22:30 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2024-07-12 01:22:30 - INFO - INSERT INTO users (username, email, hashed_password, is_active, is_superuser, is_verified) VALUES ($1::VARCHAR, $2::VARCHAR, $3::BYTEA, $4::BOOLEAN, $5::BOOLEAN, $6::BOOLEAN) RETURNING users.id
+2024-07-12 01:22:30 - INFO - [generated in 0.00087s] ('string', 'petya@gmail.com', b'$2b$12$1.6uSmigMp61p6xWs66VEe4eMDijQfApI8lsaB5UQTNX6gvuqR.sS', True, False, False)
+2024-07-12 01:22:30 - INFO - COMMIT
+2024-07-12 01:22:30 - INFO - BEGIN (implicit)
+2024-07-12 01:22:30 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_active, users.is_superuser, users.is_verified 
+FROM users 
+WHERE users.id = $1::INTEGER
+2024-07-12 01:22:30 - INFO - [generated in 0.00045s] (10,)
+2024-07-12 01:22:30 - INFO - ROLLBACK
+2024-07-12 01:22:59 - INFO - BEGIN (implicit)
+2024-07-12 01:22:59 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_active, users.is_superuser, users.is_verified 
+FROM users 
+WHERE lower(users.email) = lower($1::VARCHAR)
+2024-07-12 01:22:59 - INFO - [cached since 29.12s ago] ('petya@gmail.com',)
+2024-07-12 01:22:59 - INFO - ROLLBACK
+2024-07-12 01:23:08 - INFO - BEGIN (implicit)
+2024-07-12 01:23:08 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_active, users.is_superuser, users.is_verified 
+FROM users 
+WHERE users.id = $1::INTEGER
+2024-07-12 01:23:08 - INFO - [generated in 0.00025s] (10,)
+2024-07-12 01:23:08 - INFO - ROLLBACK
+2024-07-12 01:27:51 - INFO - API stopped
+2024-07-12 01:27:59 - INFO - API started
+2024-07-12 01:27:59 - INFO - Database initialization complete
+2024-07-12 01:28:29 - INFO - select pg_catalog.version()
+2024-07-12 01:28:29 - INFO - [raw sql] ()
+2024-07-12 01:28:29 - INFO - select current_schema()
+2024-07-12 01:28:29 - INFO - [raw sql] ()
+2024-07-12 01:28:29 - INFO - show standard_conforming_strings
+2024-07-12 01:28:29 - INFO - [raw sql] ()
+2024-07-12 01:28:29 - INFO - BEGIN (implicit)
+2024-07-12 01:28:29 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_active, users.is_superuser, users.is_verified 
+FROM users 
+WHERE lower(users.email) = lower($1::VARCHAR)
+2024-07-12 01:28:29 - INFO - [generated in 0.00083s] ('petua@gmail.com',)
+2024-07-12 01:28:29 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\fastapi_users\manager.py", line 647, in authenticate
+    user = await self.get_by_email(credentials.username)
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\fastapi_users\manager.py", line 90, in get_by_email
+    raise exceptions.UserNotExists()
+fastapi_users.exceptions.UserNotExists
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2024-07-12 01:28:29 - INFO - ROLLBACK
+2024-07-12 01:29:01 - INFO - BEGIN (implicit)
+2024-07-12 01:29:01 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_active, users.is_superuser, users.is_verified 
+FROM users 
+WHERE lower(users.email) = lower($1::VARCHAR)
+2024-07-12 01:29:01 - INFO - [cached since 32.04s ago] ('petya@gmail.com',)
+2024-07-12 01:29:01 - INFO - ROLLBACK
+2024-07-12 01:29:16 - INFO - BEGIN (implicit)
+2024-07-12 01:29:16 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_active, users.is_superuser, users.is_verified 
+FROM users 
+WHERE users.id = $1::INTEGER
+2024-07-12 01:29:16 - INFO - [generated in 0.00033s] (10,)
+2024-07-12 01:29:16 - INFO - ROLLBACK
+2024-07-12 01:29:39 - INFO - BEGIN (implicit)
+2024-07-12 01:29:39 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_active, users.is_superuser, users.is_verified 
+FROM users 
+WHERE users.id = $1::INTEGER
+2024-07-12 01:29:39 - INFO - [cached since 22.18s ago] (10,)
+2024-07-12 01:29:39 - INFO - ROLLBACK
+2024-07-12 01:30:10 - INFO - BEGIN (implicit)
+2024-07-12 01:30:10 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_active, users.is_superuser, users.is_verified 
+FROM users 
+WHERE users.id = $1::INTEGER
+2024-07-12 01:30:10 - INFO - [cached since 54.03s ago] (10,)
+2024-07-12 01:30:11 - INFO - DELETE FROM users WHERE users.id = $1::INTEGER
+2024-07-12 01:30:11 - INFO - [generated in 0.00079s] (10,)
+2024-07-12 01:30:11 - INFO - COMMIT
+2024-07-12 01:30:22 - INFO - BEGIN (implicit)
+2024-07-12 01:30:22 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_active, users.is_superuser, users.is_verified 
+FROM users 
+WHERE users.id = $1::INTEGER
+2024-07-12 01:30:22 - INFO - [cached since 65.71s ago] (10,)
+2024-07-12 01:30:22 - INFO - ROLLBACK
+2024-07-12 01:31:14 - INFO - API stopped

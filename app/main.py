@@ -1,4 +1,5 @@
 import asyncio
+import os
 import sys
 from pathlib import Path
 
@@ -9,12 +10,12 @@ from fastapi_users import FastAPIUsers
 
 from admin.router import admin_router
 from app.logger_file import logger
-from auth.manager import get_user_manager
+from auth.manager import get_user_manager, UserManager
 from auth.schemas import UserRead, UserCreate
 from auth.utils import auth_backend
 from car_user.router import car_router
 from db.models import UserOrm
-from db.orm import AsyncOrm
+from fastapi.staticfiles import StaticFiles
 from search.router import search_router
 
 BASE_DIR = Path(__file__).parent.parent
@@ -44,7 +45,16 @@ current_user = fastapi_users.current_user()
 
 @app.get("/protected-route")
 def protected_route(user: UserOrm = Depends(current_user)):
-    return {"username": user.username, "email": user.email, "is_admin": user.is_admin}
+    return {"username": user.username, "email": user.email, "is_superuser": user.is_superuser}
+
+
+@app.delete("/users/delete/me", response_model=dict)
+async def delete_me(
+        user: UserOrm = Depends(current_user),
+        user_manager: UserManager = Depends(get_user_manager),
+):
+    await user_manager.delete(user)
+    return {"status": "User deleted successfully"}
 
 
 app.include_router(admin_router)
@@ -54,7 +64,6 @@ app.include_router(search_router)
 
 async def initialize_database():
     logger.info("API started")
-    async_orm = AsyncOrm()
     logger.info("Database initialization complete")
 
 
@@ -72,6 +81,13 @@ async def shutdown_event():
 async def root():
     return {"message": "Hello World"}
 
+
+static_dir = "static"
+if not os.path.exists(static_dir):
+    os.makedirs(static_dir)
+    print(f"Created static directory at {static_dir}")
+
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 app.add_middleware(
     CORSMiddleware,

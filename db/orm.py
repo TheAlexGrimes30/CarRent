@@ -6,7 +6,7 @@ from sqlalchemy import select, delete, or_
 
 from app.logger_file import logger
 from db.database import async_session_factory
-from db.models import CarsOrm
+from db.models import CarsOrm, UserOrm
 
 BASE_DIR = Path(__file__).parent.parent
 sys.path.append(str(BASE_DIR))
@@ -469,3 +469,99 @@ class AsyncOrm(object):
             print(f"Error {e}")
             await session.rollback()
             raise
+
+    @staticmethod
+    async def get_all_users(limit: Optional[int] = None, offset: Optional[int] = None,
+                            email: Optional[str] = None, username: Optional[str] = None,
+                            is_superuser: Optional[bool] = None):
+        """
+        Метод возвращает данные всех зарегистрированных пользователей
+        :param limit:
+        :param offset:
+        :param email:
+        :param username:
+        :param is_superuser:
+        :return:
+        """
+        try:
+            query = select(UserOrm.id, UserOrm.username, UserOrm.email, UserOrm.hashed_password,
+                           UserOrm.is_active, UserOrm.is_superuser, UserOrm.is_verified)
+
+            async with async_session_factory() as session:
+
+                if limit is not None:
+                    query = query.limit(limit)
+                    logger.info(f"Applying limit: {limit}")
+
+                if offset is not None:
+                    query = query.offset(offset)
+                    logger.info(f"Applying offset: {offset}")
+
+                if username is not None:
+                    query = query.where(UserOrm.username == username)
+                    logger.info(f"Applying username: {username}")
+
+                if email is not None:
+                    query = query.where(UserOrm.email == email)
+                    logger.info(f"Applying email: {email}")
+
+                if is_superuser is not None:
+                    query = query.where(UserOrm.is_superuser == is_superuser)
+                    logger.info(f"Applying is_superuser: {is_superuser}")
+
+                result = await session.execute(query)
+                result_list = result.all()
+                result_dict = dict()
+
+                logger.info(f"Query result: {result_list}")
+
+                logger.info(f"result_list: {result}")
+                for element in result_list:
+                    logger.info(f"element: {element}")
+                    result_dict[element.id] = {
+                        "username": element.username,
+                        "email": element.email,
+                        "hashed_password": element.hashed_password,
+                        "is_active": element.is_active,
+                        "is_superuser": element.is_superuser,
+                        "is_verified": element.is_verified
+                    }
+
+                return result_dict
+        except Exception as e:
+            print(f"Error: {e}")
+            session.rollback()
+            raise
+
+    @staticmethod
+    async def get_user_data_for_admin(id: int):
+        """
+        Админ может получать данные пользователя по id
+        :param id:
+        :return:
+        """
+        async with async_session_factory() as session:
+            try:
+                query = select(
+                    UserOrm.id,
+                    UserOrm.username,
+                    UserOrm.email
+                ).where(UserOrm.id == id)
+
+                result = await session.execute(query)
+                user = result.fetchone()
+
+                if user is not None:
+                    user_data = {
+                        "id": user.id,
+                        "username": user.username,
+                        "email": user.email
+                    }
+                    return user_data
+                else:
+                    return None
+            except Exception as e:
+                print(f"Error {e}")
+                await session.rollback()
+                raise
+

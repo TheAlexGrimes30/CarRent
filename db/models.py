@@ -45,7 +45,6 @@ class UserOrm(SQLAlchemyBaseUserTable[int], Base):
     username = Column(String(128), nullable=False)
     email = Column(String(64), nullable=False, unique=True)
     hashed_password = Column(LargeBinary, nullable=False)
-    is_admin = Column(Boolean, default=False)
     is_active = Column(Boolean, default=True, nullable=False)
     is_superuser = Column(Boolean, default=False, nullable=False)
     is_verified = Column(Boolean, default=False, nullable=False)

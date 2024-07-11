@@ -164,15 +164,11 @@ async def get_car_by_id(car_id: int):
 
 
 @admin_router.get('/get_all_users')
-async def get_all_users(limit: Optional[int] = None, offset: Optional[int] = None):
-    """
-        Вывод всех автомобилей
-        :param limit:
-        :param offset:
-        :return:
-    """
+async def get_all_users(limit: Optional[int] = None, offset: Optional[int] = None,
+                        email: Optional[str] = None, username: Optional[str] = None,
+                        is_superuser: Optional[bool] = None):
     try:
-        result = await async_orm.get_all_users(limit, offset)
+        result = await async_orm.get_all_users(limit, offset, email, username, is_superuser)
         logger.info(f"All users with limit={limit} and offset={offset}")
         return {
             'data': result,
@@ -184,3 +180,13 @@ async def get_all_users(limit: Optional[int] = None, offset: Optional[int] = Non
             'status': 'error',
             'description': 'Failed to fetch users data'
         }
+
+
+@admin_router.get('/get_all_users/{id}')
+async def get_user_data(id: int):
+    result = await async_orm.get_user_data_for_admin(id)
+    logger.info(f"User with {id}")
+    return {
+        'data': result,
+        'status': 'ok'
+    }
