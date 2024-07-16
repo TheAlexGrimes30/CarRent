@@ -1,12 +1,12 @@
 import sys
 from pathlib import Path
-from typing import Optional
+from typing import Optional, List, Dict
 
 from sqlalchemy import select, delete, or_
 
 from app.logger_file import logger
 from db.database import async_session_factory
-from db.models import CarsOrm, UserOrm
+from db.models import CarsOrm, UserOrm, ChatOrm
 
 BASE_DIR = Path(__file__).parent.parent
 sys.path.append(str(BASE_DIR))
@@ -565,3 +565,84 @@ class AsyncOrm(object):
                 await session.rollback()
                 raise
 
+    @staticmethod
+    async def get_all_admins() -> List[int]:
+        try:
+            async with async_session_factory() as session:
+                query = select(UserOrm.id).where(UserOrm.is_superuser == True)
+                result = await session.execute(query)
+                return [row.id for row in result.scalars().all()]
+        except Exception as e:
+            print(f"Error: {e}")
+            session.rollback()
+            raise
+
+    @staticmethod
+    async def insert_message_to_db(user_id, message):
+        try:
+            async with async_session_factory() as session:
+                message_data = ChatOrm(
+                    user_id=user_id,
+                    message=message
+                )
+                await session.add_all([message_data])
+                session.commit()
+
+        except Exception as e:
+            print(f"Error: {e}")
+            session.rollback()
+            raise
+
+    @staticmethod
+    async def get_user_role(user_id) -> bool:
+        try:
+            async with async_session_factory() as session:
+                result = await session.execute(
+                    select(UserOrm.is_superuser).where(UserOrm.id == user_id)
+                )
+                user_role = result.scalar_one_or_none()
+                if user_role is None:
+                    raise ValueError(f"User {user_id} not found")
+                return user_role
+        except Exception as e:
+            print(f"Error: {e}")
+            session.rollback()
+            raise
+
+    @staticmethod
+    async def get_user_messages(user_id: int, limit: Optional[int] = None, offset: Optional[int] = None) -> Dict[
+        int, Dict[str, str]]:
+        try:
+            query = (select(ChatOrm.chat_id, ChatOrm.user_id, ChatOrm.message, ChatOrm.written_at)
+                     .where(ChatOrm.user_id == user_id)
+                     .order_by(ChatOrm.written_at))
+
+            async with async_session_factory() as session:
+
+                if limit is not None:
+                    query = query.limit(limit)
+                    logger.info(f"Applying limit: {limit}")
+
+                if offset is not None:
+                    query = query.offset(offset)
+                    logger.info(f"Applying offset: {offset}")
+
+                result = await session.execute(query)
+                result_list = result.all()
+                result_dict = {}
+
+                logger.info(f"Query result: {result_list}")
+
+                for element in result_list:
+                    result_dict[element.chat_id] = {
+                        "user_id": element.user_id,
+                        "message": element.message,
+                        "written_at": element.written_at
+                    }
+                    logger.info(f"Processed element: {element}")
+
+                return result_dict
+
+        except Exception as e:
+            logger.error(f"Error fetching user messages: {e}")
+            raise

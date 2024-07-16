@@ -1,6 +1,6 @@
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
-from sqlalchemy import String, CheckConstraint, Integer, Column, LargeBinary, Boolean
-from sqlalchemy.orm import mapped_column, Mapped, declarative_base
+from sqlalchemy import String, CheckConstraint, Integer, Column, LargeBinary, Boolean, ForeignKey, DateTime, func
+from sqlalchemy.orm import mapped_column, Mapped, declarative_base, relationship
 
 Base = declarative_base()
 
@@ -48,3 +48,13 @@ class UserOrm(SQLAlchemyBaseUserTable[int], Base):
     is_active = Column(Boolean, default=True, nullable=False)
     is_superuser = Column(Boolean, default=False, nullable=False)
     is_verified = Column(Boolean, default=False, nullable=False)
+    chats = relationship("ChatOrm", back_populates="user", cascade="all, delete-orphan")
+
+
+class ChatOrm(Base):
+    __tablename__ = "chat"
+    chat_id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    message = Column(String, nullable=False)
+    written_at = Column(DateTime, default=func.now())
+    user = relationship("UserOrm", back_populates="chats")

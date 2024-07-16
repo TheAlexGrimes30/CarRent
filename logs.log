@@ -3053,3 +3053,96 @@ WHERE users.id = $1::INTEGER
 2024-07-12 01:30:22 - INFO - [cached since 65.71s ago] (10,)
 2024-07-12 01:30:22 - INFO - ROLLBACK
 2024-07-12 01:31:14 - INFO - API stopped
+2024-07-12 01:31:46 - INFO - API started
+2024-07-12 01:31:46 - INFO - Database initialization complete
+2024-07-12 01:32:14 - INFO - select pg_catalog.version()
+2024-07-12 01:32:14 - INFO - [raw sql] ()
+2024-07-12 01:32:14 - INFO - select current_schema()
+2024-07-12 01:32:14 - INFO - [raw sql] ()
+2024-07-12 01:32:14 - INFO - show standard_conforming_strings
+2024-07-12 01:32:14 - INFO - [raw sql] ()
+2024-07-12 01:32:14 - INFO - BEGIN (implicit)
+2024-07-12 01:32:14 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_active, users.is_superuser, users.is_verified 
+FROM users 
+WHERE lower(users.email) = lower($1::VARCHAR)
+2024-07-12 01:32:14 - INFO - [generated in 0.00081s] ('petya@gmail.com',)
+2024-07-12 01:32:14 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\fastapi_users\manager.py", line 647, in authenticate
+    user = await self.get_by_email(credentials.username)
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\fastapi_users\manager.py", line 90, in get_by_email
+    raise exceptions.UserNotExists()
+fastapi_users.exceptions.UserNotExists
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Python SFU\Algoritms\CarRent\lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2024-07-12 01:32:14 - INFO - ROLLBACK
+2024-07-12 01:32:39 - INFO - BEGIN (implicit)
+2024-07-12 01:32:39 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_active, users.is_superuser, users.is_verified 
+FROM users
+2024-07-12 01:32:39 - INFO - [generated in 0.00052s] ()
+2024-07-12 01:32:39 - INFO - Query result: [(1, 'string', 'user@example.com', b'$2b$12$QzDRgGHU2Tic9B8OrsR96uWqSQpicSDMNnAEqX4nwpXTYdLk0GNZG', True, False, False), (2, 'string', 'user@exameferferple.com', b'$2b$12$6eCoBQRtqpbxrx5Wm9W7aOEjxeqOBipbDo5OVUf6v3hM594jt.tca', True, False, False), (3, 'sagop', 'sagop@gmail.com', b'$2b$12$Mn.jMWpIf3b595PsiC0zhO741SK.mXfchXhC48m38UqZH37qa.iMW', True, False, False), (4, 'sagop', 'sagop123@gmail.com', b'$2b$12$P8QcXPVLh/EzUXUc85u3VeAkNSM0arIboQiD2dOqp3CYOpjmkHtPS', True, False, False), (5, 'a', 'a@mail.com', b'$2b$12$0azc3qYZ/viscvwEaKXUCu7ReVM68/7stCGnaMTrDHSajfrVanCWi', True, False, False), (6, 'string', 'kolya@gmail.com', b'$2b$12$Nk8OpAWR3/xzHJOwoHdn2OP1YtAZMBs0siDE3w9HiQz/OZR2k9kE2', True, False, False), (7, 'string', 'user@geymail.com', b'$2b$12$4pteMPH83hQeEKEeUmOmd.HU.hxC/ugAnW4Yg63DDmvc83KlSmI5W', True, False, False), (8, 'string', 'user@examerfererefre.com', b'$2b$12$UB8UNBI7BN6kiRyKCM7hFeurFB3E5VllTl6Of3tijH2G9ljysWbHi', True, False, False), (9, 'string', 'zhenya@example.com', b'$2b$12$isdOCuf04sG1Ss6h1SiNze0CPBcl2CXjSRdFbpx7ASk3WwOkM//MO', True, True, False)]
+2024-07-12 01:32:39 - INFO - result_list: <sqlalchemy.engine.result.ChunkedIteratorResult object at 0x000001F071D36240>
+2024-07-12 01:32:39 - INFO - element: (1, 'string', 'user@example.com', b'$2b$12$QzDRgGHU2Tic9B8OrsR96uWqSQpicSDMNnAEqX4nwpXTYdLk0GNZG', True, False, False)
+2024-07-12 01:32:39 - INFO - element: (2, 'string', 'user@exameferferple.com', b'$2b$12$6eCoBQRtqpbxrx5Wm9W7aOEjxeqOBipbDo5OVUf6v3hM594jt.tca', True, False, False)
+2024-07-12 01:32:39 - INFO - element: (3, 'sagop', 'sagop@gmail.com', b'$2b$12$Mn.jMWpIf3b595PsiC0zhO741SK.mXfchXhC48m38UqZH37qa.iMW', True, False, False)
+2024-07-12 01:32:39 - INFO - element: (4, 'sagop', 'sagop123@gmail.com', b'$2b$12$P8QcXPVLh/EzUXUc85u3VeAkNSM0arIboQiD2dOqp3CYOpjmkHtPS', True, False, False)
+2024-07-12 01:32:39 - INFO - element: (5, 'a', 'a@mail.com', b'$2b$12$0azc3qYZ/viscvwEaKXUCu7ReVM68/7stCGnaMTrDHSajfrVanCWi', True, False, False)
+2024-07-12 01:32:39 - INFO - element: (6, 'string', 'kolya@gmail.com', b'$2b$12$Nk8OpAWR3/xzHJOwoHdn2OP1YtAZMBs0siDE3w9HiQz/OZR2k9kE2', True, False, False)
+2024-07-12 01:32:39 - INFO - element: (7, 'string', 'user@geymail.com', b'$2b$12$4pteMPH83hQeEKEeUmOmd.HU.hxC/ugAnW4Yg63DDmvc83KlSmI5W', True, False, False)
+2024-07-12 01:32:39 - INFO - element: (8, 'string', 'user@examerfererefre.com', b'$2b$12$UB8UNBI7BN6kiRyKCM7hFeurFB3E5VllTl6Of3tijH2G9ljysWbHi', True, False, False)
+2024-07-12 01:32:39 - INFO - element: (9, 'string', 'zhenya@example.com', b'$2b$12$isdOCuf04sG1Ss6h1SiNze0CPBcl2CXjSRdFbpx7ASk3WwOkM//MO', True, True, False)
+2024-07-12 01:32:39 - INFO - ROLLBACK
+2024-07-12 01:32:39 - INFO - All users with limit=None and offset=None
+2024-07-12 01:33:01 - INFO - BEGIN (implicit)
+2024-07-12 01:33:01 - INFO - DELETE FROM cars WHERE cars.car_id = $1::INTEGER
+2024-07-12 01:33:01 - INFO - [generated in 0.00125s] (4,)
+2024-07-12 01:33:01 - INFO - COMMIT
+2024-07-12 01:33:01 - INFO - Car with 4 was deleted
+2024-07-12 01:33:06 - INFO - BEGIN (implicit)
+2024-07-12 01:33:06 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_active, users.is_superuser, users.is_verified 
+FROM users
+2024-07-12 01:33:06 - INFO - [cached since 26.65s ago] ()
+2024-07-12 01:33:06 - INFO - Query result: [(1, 'string', 'user@example.com', b'$2b$12$QzDRgGHU2Tic9B8OrsR96uWqSQpicSDMNnAEqX4nwpXTYdLk0GNZG', True, False, False), (2, 'string', 'user@exameferferple.com', b'$2b$12$6eCoBQRtqpbxrx5Wm9W7aOEjxeqOBipbDo5OVUf6v3hM594jt.tca', True, False, False), (3, 'sagop', 'sagop@gmail.com', b'$2b$12$Mn.jMWpIf3b595PsiC0zhO741SK.mXfchXhC48m38UqZH37qa.iMW', True, False, False), (4, 'sagop', 'sagop123@gmail.com', b'$2b$12$P8QcXPVLh/EzUXUc85u3VeAkNSM0arIboQiD2dOqp3CYOpjmkHtPS', True, False, False), (5, 'a', 'a@mail.com', b'$2b$12$0azc3qYZ/viscvwEaKXUCu7ReVM68/7stCGnaMTrDHSajfrVanCWi', True, False, False), (6, 'string', 'kolya@gmail.com', b'$2b$12$Nk8OpAWR3/xzHJOwoHdn2OP1YtAZMBs0siDE3w9HiQz/OZR2k9kE2', True, False, False), (7, 'string', 'user@geymail.com', b'$2b$12$4pteMPH83hQeEKEeUmOmd.HU.hxC/ugAnW4Yg63DDmvc83KlSmI5W', True, False, False), (8, 'string', 'user@examerfererefre.com', b'$2b$12$UB8UNBI7BN6kiRyKCM7hFeurFB3E5VllTl6Of3tijH2G9ljysWbHi', True, False, False), (9, 'string', 'zhenya@example.com', b'$2b$12$isdOCuf04sG1Ss6h1SiNze0CPBcl2CXjSRdFbpx7ASk3WwOkM//MO', True, True, False)]
+2024-07-12 01:33:06 - INFO - result_list: <sqlalchemy.engine.result.ChunkedIteratorResult object at 0x000001F071D46340>
+2024-07-12 01:33:06 - INFO - element: (1, 'string', 'user@example.com', b'$2b$12$QzDRgGHU2Tic9B8OrsR96uWqSQpicSDMNnAEqX4nwpXTYdLk0GNZG', True, False, False)
+2024-07-12 01:33:06 - INFO - element: (2, 'string', 'user@exameferferple.com', b'$2b$12$6eCoBQRtqpbxrx5Wm9W7aOEjxeqOBipbDo5OVUf6v3hM594jt.tca', True, False, False)
+2024-07-12 01:33:06 - INFO - element: (3, 'sagop', 'sagop@gmail.com', b'$2b$12$Mn.jMWpIf3b595PsiC0zhO741SK.mXfchXhC48m38UqZH37qa.iMW', True, False, False)
+2024-07-12 01:33:06 - INFO - element: (4, 'sagop', 'sagop123@gmail.com', b'$2b$12$P8QcXPVLh/EzUXUc85u3VeAkNSM0arIboQiD2dOqp3CYOpjmkHtPS', True, False, False)
+2024-07-12 01:33:06 - INFO - element: (5, 'a', 'a@mail.com', b'$2b$12$0azc3qYZ/viscvwEaKXUCu7ReVM68/7stCGnaMTrDHSajfrVanCWi', True, False, False)
+2024-07-12 01:33:06 - INFO - element: (6, 'string', 'kolya@gmail.com', b'$2b$12$Nk8OpAWR3/xzHJOwoHdn2OP1YtAZMBs0siDE3w9HiQz/OZR2k9kE2', True, False, False)
+2024-07-12 01:33:06 - INFO - element: (7, 'string', 'user@geymail.com', b'$2b$12$4pteMPH83hQeEKEeUmOmd.HU.hxC/ugAnW4Yg63DDmvc83KlSmI5W', True, False, False)
+2024-07-12 01:33:06 - INFO - element: (8, 'string', 'user@examerfererefre.com', b'$2b$12$UB8UNBI7BN6kiRyKCM7hFeurFB3E5VllTl6Of3tijH2G9ljysWbHi', True, False, False)
+2024-07-12 01:33:06 - INFO - element: (9, 'string', 'zhenya@example.com', b'$2b$12$isdOCuf04sG1Ss6h1SiNze0CPBcl2CXjSRdFbpx7ASk3WwOkM//MO', True, True, False)
+2024-07-12 01:33:06 - INFO - ROLLBACK
+2024-07-12 01:33:06 - INFO - All users with limit=None and offset=None
+2024-07-12 01:33:26 - INFO - BEGIN (implicit)
+2024-07-12 01:33:26 - INFO - DELETE FROM cars WHERE cars.car_id = $1::INTEGER
+2024-07-12 01:33:26 - INFO - [cached since 24.45s ago] (9,)
+2024-07-12 01:33:26 - INFO - COMMIT
+2024-07-12 01:33:26 - INFO - Car with 9 was deleted
+2024-07-12 01:33:33 - INFO - BEGIN (implicit)
+2024-07-12 01:33:33 - INFO - SELECT users.id, users.username, users.email, users.hashed_password, users.is_active, users.is_superuser, users.is_verified 
+FROM users
+2024-07-12 01:33:33 - INFO - [cached since 53.52s ago] ()
+2024-07-12 01:33:33 - INFO - Query result: [(1, 'string', 'user@example.com', b'$2b$12$QzDRgGHU2Tic9B8OrsR96uWqSQpicSDMNnAEqX4nwpXTYdLk0GNZG', True, False, False), (2, 'string', 'user@exameferferple.com', b'$2b$12$6eCoBQRtqpbxrx5Wm9W7aOEjxeqOBipbDo5OVUf6v3hM594jt.tca', True, False, False), (3, 'sagop', 'sagop@gmail.com', b'$2b$12$Mn.jMWpIf3b595PsiC0zhO741SK.mXfchXhC48m38UqZH37qa.iMW', True, False, False), (4, 'sagop', 'sagop123@gmail.com', b'$2b$12$P8QcXPVLh/EzUXUc85u3VeAkNSM0arIboQiD2dOqp3CYOpjmkHtPS', True, False, False), (5, 'a', 'a@mail.com', b'$2b$12$0azc3qYZ/viscvwEaKXUCu7ReVM68/7stCGnaMTrDHSajfrVanCWi', True, False, False), (6, 'string', 'kolya@gmail.com', b'$2b$12$Nk8OpAWR3/xzHJOwoHdn2OP1YtAZMBs0siDE3w9HiQz/OZR2k9kE2', True, False, False), (7, 'string', 'user@geymail.com', b'$2b$12$4pteMPH83hQeEKEeUmOmd.HU.hxC/ugAnW4Yg63DDmvc83KlSmI5W', True, False, False), (8, 'string', 'user@examerfererefre.com', b'$2b$12$UB8UNBI7BN6kiRyKCM7hFeurFB3E5VllTl6Of3tijH2G9ljysWbHi', True, False, False), (9, 'string', 'zhenya@example.com', b'$2b$12$isdOCuf04sG1Ss6h1SiNze0CPBcl2CXjSRdFbpx7ASk3WwOkM//MO', True, True, False)]
+2024-07-12 01:33:33 - INFO - result_list: <sqlalchemy.engine.result.ChunkedIteratorResult object at 0x000001F071D47C00>
+2024-07-12 01:33:33 - INFO - element: (1, 'string', 'user@example.com', b'$2b$12$QzDRgGHU2Tic9B8OrsR96uWqSQpicSDMNnAEqX4nwpXTYdLk0GNZG', True, False, False)
+2024-07-12 01:33:33 - INFO - element: (2, 'string', 'user@exameferferple.com', b'$2b$12$6eCoBQRtqpbxrx5Wm9W7aOEjxeqOBipbDo5OVUf6v3hM594jt.tca', True, False, False)
+2024-07-12 01:33:33 - INFO - element: (3, 'sagop', 'sagop@gmail.com', b'$2b$12$Mn.jMWpIf3b595PsiC0zhO741SK.mXfchXhC48m38UqZH37qa.iMW', True, False, False)
+2024-07-12 01:33:33 - INFO - element: (4, 'sagop', 'sagop123@gmail.com', b'$2b$12$P8QcXPVLh/EzUXUc85u3VeAkNSM0arIboQiD2dOqp3CYOpjmkHtPS', True, False, False)
+2024-07-12 01:33:33 - INFO - element: (5, 'a', 'a@mail.com', b'$2b$12$0azc3qYZ/viscvwEaKXUCu7ReVM68/7stCGnaMTrDHSajfrVanCWi', True, False, False)
+2024-07-12 01:33:33 - INFO - element: (6, 'string', 'kolya@gmail.com', b'$2b$12$Nk8OpAWR3/xzHJOwoHdn2OP1YtAZMBs0siDE3w9HiQz/OZR2k9kE2', True, False, False)
+2024-07-12 01:33:33 - INFO - element: (7, 'string', 'user@geymail.com', b'$2b$12$4pteMPH83hQeEKEeUmOmd.HU.hxC/ugAnW4Yg63DDmvc83KlSmI5W', True, False, False)
+2024-07-12 01:33:33 - INFO - element: (8, 'string', 'user@examerfererefre.com', b'$2b$12$UB8UNBI7BN6kiRyKCM7hFeurFB3E5VllTl6Of3tijH2G9ljysWbHi', True, False, False)
+2024-07-12 01:33:33 - INFO - element: (9, 'string', 'zhenya@example.com', b'$2b$12$isdOCuf04sG1Ss6h1SiNze0CPBcl2CXjSRdFbpx7ASk3WwOkM//MO', True, True, False)
+2024-07-12 01:33:33 - INFO - ROLLBACK
+2024-07-12 01:33:33 - INFO - All users with limit=None and offset=None
+2024-07-12 01:44:15 - INFO - API stopped
+2024-07-16 22:41:41 - INFO - API started
+2024-07-16 22:41:41 - INFO - Database initialization complete
+2024-07-16 22:55:44 - INFO - API stopped

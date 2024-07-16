@@ -14,6 +14,7 @@ from auth.manager import get_user_manager, UserManager
 from auth.schemas import UserRead, UserCreate
 from auth.utils import auth_backend
 from car_user.router import car_router
+from chat.router import chat_router
 from db.models import UserOrm
 from fastapi.staticfiles import StaticFiles
 from search.router import search_router
@@ -60,6 +61,7 @@ async def delete_me(
 app.include_router(admin_router)
 app.include_router(car_router)
 app.include_router(search_router)
+app.include_router(chat_router)
 
 
 async def initialize_database():
